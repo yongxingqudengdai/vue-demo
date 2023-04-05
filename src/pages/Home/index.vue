@@ -11,7 +11,7 @@
     <Floor></Floor> -->
     <Brand></Brand>
     <button>+1</button>
-      <span>store.data=</span>
+      <span>store.data={{ data }}</span>
     <button>-1</button>
   </div>
 </template>
@@ -24,6 +24,7 @@ import Like from './Like'
 import Floor from './Floor'
 import Brand from './Brand'
 
+import { mapState } from "vuex";
 export default {
   name: "Home",
   components: {
@@ -34,6 +35,9 @@ export default {
     Floor,
     Brand,
   },
+  computed:{
+    ...mapState['data']
+  }
 };
 </script>
 
