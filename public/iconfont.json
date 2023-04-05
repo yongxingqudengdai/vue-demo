@@ -1,0 +1,23 @@
+{
+  "id": "3941212",
+  "name": "icon-",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "4767023",
+      "name": "arrowdown",
+      "font_class": "arrowdown",
+      "unicode": "e7ee",
+      "unicode_decimal": 59374
+    },
+    {
+      "icon_id": "34453069",
+      "name": "up-arrow",
+      "font_class": "up-arrow",
+      "unicode": "e844",
+      "unicode_decimal": 59460
+    }
+  ]
+}
