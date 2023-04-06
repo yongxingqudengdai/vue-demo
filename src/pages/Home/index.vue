@@ -10,21 +10,21 @@
     <!-- <Floor></Floor>
     <Floor></Floor> -->
     <Brand></Brand>
-    <button>+1</button>
-      <span>store.data={{ data }}</span>
-    <button>-1</button>
+    <button @click="ADD">+1</button>
+    <span>{{ count }}</span>
+    <button @click="MINUS">-1</button>
   </div>
 </template>
 
 <script>
 import ListContainer from "./ListContainer";
 import Recommand from "./Recommand";
-import Rank from './Rank'
-import Like from './Like'
-import Floor from './Floor'
-import Brand from './Brand'
+import Rank from "./Rank";
+import Like from "./Like";
+import Floor from "./Floor";
+import Brand from "./Brand";
 
-import { mapState } from "vuex";
+import { mapMutations, mapState } from "vuex";
 export default {
   name: "Home",
   components: {
@@ -35,9 +35,16 @@ export default {
     Floor,
     Brand,
   },
-  computed:{
-    ...mapState['data']
-  }
+  computed: {
+    ...mapState("home", ["count"]),
+    // 正常return写法
+    //   count() {
+    //     return this.$store.state.count;
+    //   },
+  },
+  methods: {
+    ...mapMutations("home", { ADD: "ADD", MINUS: "MINUS" }),
+  },
 };
 </script>
 

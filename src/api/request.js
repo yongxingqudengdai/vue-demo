@@ -4,7 +4,7 @@ import axios from 'axios';
 import nprogress from 'nprogress';
 // 引入进度条样式
 import "nprogress/nprogress.css";
-console.log(nprogress);
+// console.log(nprogress);
 
 const requests = axios.create({
   baseURL: "/api",

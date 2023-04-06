@@ -1695,6 +1695,13 @@
 <script>
 export default {
   name: "TypeNav",
+  // 挂载完毕后再向服务器发请求
+  mounted(){
+    this.$store.dispatch('home/categoryList');
+  },
+  computed:{
+  
+  }
 };
 </script>
 
