@@ -8,8 +8,11 @@ import TypeNav from './components/TypeNav';
 // 全局组件注册的语法:Vue.component('组件标签名',构造器对象)
 Vue.component(TypeNav.name, TypeNav)
 
-// 引入MockServe.js 的Mock数据
+// 引入MockServe.js 的Mock资源
 import '@/mock/mockServe'
+// 引入swiper的css样式
+import 'swiper/css/swiper.css'
+
 // 引入vueRouter
 import VueRouter from 'vue-router'
 // 引入路由器
