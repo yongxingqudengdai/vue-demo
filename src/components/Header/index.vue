@@ -170,11 +170,3 @@ export default {
 }
 </style>
 
-    //   this.$router.push(
-    //     {
-    //       name: "search",
-    //       params: { keyword: this.KeyWord },
-    //       query: { k: this.KeyWord.toUpperCase() },
-    //     },
-    //   );
-    // },

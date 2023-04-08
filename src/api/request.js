@@ -1,4 +1,4 @@
-//对于axios进行二次封装
+//对于axios进行二次封装 范例原名ajax.js
 import axios from 'axios';
 // 引入进度条
 import nprogress from 'nprogress';
