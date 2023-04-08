@@ -6,11 +6,7 @@
         <!--banner轮播-->
         <div class="swiper-container" id="mySwiper">
           <div class="swiper-wrapper">
-            <div
-              class="swiper-slide"
-              v-for="(carousel, index) in bannerList"
-              :key="carousel.id"
-            >
+            <div class="swiper-slide" v-for="(carousel,index) in bannerList" :key="carousel.id">
               <img :src="carousel.imgUrl" />
             </div>
           </div>
@@ -105,25 +101,31 @@ export default {
   mounted() {
     // 派发action,通过Vuex发起ajax请求，把数据存储在store
     this.$store.dispatch("home/bannerList");
-    setTimeout(() => {
-      // method1 通过定时器让swiper实例最后生成，防止异步问题
-      var mySwiper = new Swiper(document.querySelector(".swiper-container"),{
-        loop:true,
-        pegination:{
-          el:".swiper-pagination",
-        },
-        navigation:{
-          nextEl:".swiper-button-next",
-          prevEl:".swiper-button-prev",
-        },
-      });
-    }, 2000);
+
   },
   computed: {
     ...mapState({
       bannerList: (state) => state.home.bannerList,
     }),
   },
+  watch:{
+    // 当bannerlist改变时已经完成,但是v-for遍历也需要时间。所以这个方案还是不行
+    bannerList:{
+      handler(newValue,oldValue){
+        var mySwiper = new Swiper(document.querySelector(".swiper-container"),{
+          loop:true,
+          pagination:{
+            el:".swiper-pagination",
+            clickable:true,
+          },
+          navigation:{
+            nextEl:".swiper-button-next",
+            prevEl:".swiper-button-prev",
+          },
+        });
+      }
+    }
+  }
 };
 </script>
 
