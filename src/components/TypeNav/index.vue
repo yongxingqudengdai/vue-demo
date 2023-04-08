@@ -13,7 +13,7 @@
         <a href="###">有趣</a>
         <a href="###">秒杀</a>
       </nav>
-      <div class="sort">
+      <div class="sort" v-show="show">
         <!-- goSearch()利用 -->
         <div class="all-sort-list2" @click="goSearch">
           <!-- 一级分类 -->
@@ -21,27 +21,35 @@
             class="item"
             v-for="(item, index) in categoryList"
             :key="item.categoryId"
-            :class="{ cur: currentIndex === index }"
           >
             <h3
+              :class="{ skyblue: currentIndex === index }"
               @mouseenter="changeIndex(index)"
-              @mouseleave="leaveIndex(index)"
             >
-              <router-link to="/search">{{ item.categoryName }}-{{ index }}</router-link>
+              <a
+                :data-categoryName="item.categoryName"
+                :data-category1Id="item.categoryId"
+                >{{ item.categoryName }}</a
+              >
             </h3>
             <div
               class="item-list clearfix"
               :style="{ display: currentIndex === index ? 'block' : 'none' }"
             >
               <!-- 二级分类 -->
-              <div
-                class="subitem"
-                v-for="(subitem, index) in item.categoryChild"
-                :key="subitem.categoryId"
-              >
-                <dl class="fore">
+              <div class="subitem">
+                <dl
+                  class="fore"
+                  v-for="(subitem, index) in item.categoryChild"
+                  :key="subitem.categoryId"
+                >
                   <dt>
-                    <router-link to="/search">{{ subitem.categoryName }}</router-link>
+                    <!-- data-是自定义属性，通过dataset获取 -->
+                    <a
+                      :data-categoryName="subitem.categoryName"
+                      :data-category2Id="subitem.categoryId"
+                      >{{ subitem.categoryName }}</a
+                    >
                   </dt>
                   <dd>
                     <!-- 三级分类 -->
@@ -49,7 +57,11 @@
                       v-for="(subsubitem, index) in subitem.categoryChild"
                       :key="subsubitem.categoryId"
                     >
-                      <router-link to="/search">{{ subsubitem.categoryName }}</router-link>
+                      <a
+                        :data-categoryName="subitem.categoryName"
+                        :data-category3Id="subsubitem.categoryId"
+                        >{{ subitem.categoryName }}</a
+                      >
                     </em>
                   </dd>
                 </dl>
@@ -71,6 +83,7 @@ export default {
   data() {
     return {
       currentIndex: -1, //鼠标所在的一级菜单编号
+      show: true,
     };
   },
 
@@ -82,7 +95,7 @@ export default {
   computed: {
     ...mapState({
       // 下文的简写形式：
-      categoryList:state => state.home.categoryList,
+      categoryList: (state) => state.home.categoryList,
       // categoryList: (state) => {
       //   return state.home.categoryList;
       // },
@@ -95,17 +108,39 @@ export default {
     //   this.currentIndex = index;
     // },
     //启用节流的方法
-    changeIndex:throttle(function(index){
+    changeIndex: throttle(function (index) {
       this.currentIndex = index;
-    },50),
-    
+    }, 50),
+
     // 鼠标离开一级菜单时
     leaveIndex(index) {
       this.currentIndex = -1;
     },
-    goSearch(){
-      // let node = 
-    }
+    goSearch(event) {
+      // 获取触发该事件的html节点
+      let element = event.target;
+      // dataset获取节点上的自定义数据属性
+      // 花括号表示解构赋值语法
+      let { categoryname, category1id, category2id, category3id } =
+        element.dataset;
+      // 如果有categoryname属性那就是a标签
+      if (categoryname) {
+        let location = { name: "search" }; //rouer.push
+        let query = { categoryName: categoryname };
+        if (category1id) {
+          query.category1id = category1id;
+        } else if (category2id) {
+          query.category2id = category2id;
+        } else {
+          query.category3id = category3id;
+        }
+        // merge
+        location.query = query;
+        // router-link params
+        console.log(location);
+        this.$router.push(location);
+      }
+    },
   },
 };
 </script>
@@ -221,7 +256,7 @@ export default {
           }
         }
 
-        .cur {
+        .skyblue {
           background: skyblue;
         }
       }
