@@ -1,11 +1,12 @@
 // 引入api服务
-import {reqCategoryList} from '@/api'
+import { reqBannerList,reqCategoryList } from '@/api';
 
 // home模块的小仓库
 const state = {
   count: 1 ,
   // 三级菜单数据，初始化数组
   categoryList:[],
+  bannerList:[]
 };
 const mutations = {
   ADD(state) {
@@ -17,6 +18,9 @@ const mutations = {
   CATEGORYLIST(state,value){
     state.categoryList = value;
     // console.log(value)
+  },
+  BANNERLIST(state,value){
+    state.bannerList = value;
   }
 };
 const actions = {
@@ -27,8 +31,17 @@ const actions = {
       // 执行mutation方法
       context.commit('CATEGORYLIST',result.data);
     }
-  }
+  },
+  // 通过mockapi获取banner数据
+  async bannerList(context){
+    let result = await reqBannerList();
+    console.log(result);
+    if(result.code === 200){
+      context.commit('BANNERLIST',result.data);
+    }
+  },
 };
+
 const getters = {};
 
 export default {
