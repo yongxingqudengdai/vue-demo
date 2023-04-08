@@ -1,8 +1,6 @@
 <template>
   <div>
-    <h1>Search.vue</h1>
-    <h2>params:{{ $route.params.keyword }}</h2>
-    <h3>query:{{ $route.query.k }}</h3>
+    <type-nav></type-nav>
   </div>
 </template>
 

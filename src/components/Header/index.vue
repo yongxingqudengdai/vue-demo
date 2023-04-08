@@ -63,16 +63,15 @@ export default {
   },
   methods: {
     goSearch() {
-      this.$router.push(
-        {
-          name: "search",
-          params: { keyword: this.KeyWord },
-          query: { k: this.KeyWord.toUpperCase() },
-        },
-      );
-    },
-  },
-};
+      if (this.$route.query) {
+        let location = {name: "search" , params:{keyword: this.KeyWord || undefined} };
+        // 搜索框用params，三级导航用query
+        location.query = this.$route.query;
+        this.$router.push(location);
+      }
+    }
+  }
+}
 </script>
 
 <style scoped lang="less">
@@ -170,3 +169,12 @@ export default {
   }
 }
 </style>
+
+    //   this.$router.push(
+    //     {
+    //       name: "search",
+    //       params: { keyword: this.KeyWord },
+    //       query: { k: this.KeyWord.toUpperCase() },
+    //     },
+    //   );
+    // },

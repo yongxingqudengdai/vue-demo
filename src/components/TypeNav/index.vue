@@ -98,7 +98,11 @@ export default {
   // 挂载完毕后再向服务器发请求
   mounted() {
     // 调用actions方法
-    this.$store.dispatch("home/categoryList");
+    if(this.$route.path != "/home"){
+      this.show = false;
+    }
+    // 在app.vue中派发，避免多次挂载中的频繁请求
+    // this.$store.dispatch("home/categoryList");
   },
   computed: {
     ...mapState({
@@ -125,8 +129,7 @@ export default {
       let element = event.target;
       // dataset获取节点上的自定义数据属性
       // 花括号表示解构赋值语法
-      let { categoryname, category1id, category2id, category3id } =
-        element.dataset;
+      let { categoryname, category1id, category2id, category3id } = element.dataset;
       // 如果有categoryname属性那就是a标签
       if (categoryname) {
         let location = { name: "search" }; //rouer.push
@@ -139,6 +142,7 @@ export default {
           query.category3id = category3id;
         }
         if (this.$route.params) {
+          // 搜索框用params，三级导航用query
           location.params = this.$route.params;
           location.query = query;
         }
@@ -147,12 +151,14 @@ export default {
       }
     },
     enterShow() {
+      // 只有搜索组件才会进来显示
       if (this.$route.path != "/home") {
         this.show = true;
       }
     },
     leaveShow() {
       this.currentIndex = -1;
+      // 只有搜索组件才会隐藏
       if (this.$route.path != "/home") {
         this.show = false;
       }
@@ -215,7 +221,6 @@ export default {
             a {
               color: #333;
             }
-
             &.skyblue {
               background: skyblue;
             }
@@ -277,13 +282,16 @@ export default {
         }
       }
     }
-
+    //过渡动画的样式
+    //过渡动画开始状态（进入）
     .sort-enter {
       height: 0px;
     }
+    // 过渡动画结束状态（进入）
     .sort-enter-to {
       height: 461px;
     }
+    // 定义动画时间、速率
     .sort-enter-active {
       transition: all 0.5s linear;
     }

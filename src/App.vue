@@ -16,7 +16,11 @@ import Footer from './components/Footer/Footer'
 
 export default {
   name: 'App',
-  components: {Header,Footer}
+  components: {Header,Footer},
+  mounted(){  
+    // 只在这里请求一次（派发）
+    this.$store.dispatch("home/categoryList");
+  }
 }
 </script>
 
