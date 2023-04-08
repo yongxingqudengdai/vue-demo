@@ -2,7 +2,72 @@
   <!-- 商品分类导航 -->
   <div class="type-nav">
     <div class="container">
-      <h2 class="all">全部商品分类</h2>
+      <div @mouseleave="leaveShow" @mouseenter="enterShow">
+        <h2 class="all">全部商品分类</h2>
+        <!-- transition anime -->
+        <transition name="sort">
+          <div class="sort" v-show="show">
+            <!-- goSearch()利用 -->
+            <div class="all-sort-list2" @click="goSearch">
+              <!-- 一级分类 -->
+              <div
+                class="item"
+                v-for="(item, index) in categoryList"
+                :key="item.categoryId"
+              >
+                <h3
+                  :class="{ skyblue: currentIndex === index }"
+                  @mouseenter="changeIndex(index)"
+                >
+                  <a
+                    :data-categoryName="item.categoryName"
+                    :data-category1Id="item.categoryId"
+                    >{{ item.categoryName }}</a
+                  >
+                </h3>
+                <div
+                  class="item-list clearfix"
+                  :style="{
+                    display: currentIndex === index ? 'block' : 'none',
+                  }"
+                >
+                  <!-- 二级分类 -->
+                  <div class="subitem">
+                    <dl
+                      class="fore"
+                      v-for="(subitem, index) in item.categoryChild"
+                      :key="subitem.categoryId"
+                    >
+                      <dt>
+                        <!-- data-是自定义属性，通过dataset获取 -->
+                        <a
+                          :data-categoryName="subitem.categoryName"
+                          :data-category2Id="subitem.categoryId"
+                          >{{ subitem.categoryName }}</a
+                        >
+                      </dt>
+                      <dd>
+                        <!-- 三级分类 -->
+                        <em
+                          v-for="(subsubitem, index) in subitem.categoryChild"
+                          :key="subsubitem.catsegoryId"
+                        >
+                          <a
+                            :data-categoryName="subitem.categoryName"
+                            :data-category3Id="subsubitem.categoryId"
+                            >{{ subsubitem.categoryName }}</a
+                          >
+                        </em>
+                      </dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </transition>
+      </div>
+
       <nav class="nav">
         <a href="###">服装城</a>
         <a href="###">美妆馆</a>
@@ -13,63 +78,6 @@
         <a href="###">有趣</a>
         <a href="###">秒杀</a>
       </nav>
-      <div class="sort" v-show="show">
-        <!-- goSearch()利用 -->
-        <div class="all-sort-list2" @click="goSearch">
-          <!-- 一级分类 -->
-          <div
-            class="item"
-            v-for="(item, index) in categoryList"
-            :key="item.categoryId"
-          >
-            <h3
-              :class="{ skyblue: currentIndex === index }"
-              @mouseenter="changeIndex(index)"
-            >
-              <a
-                :data-categoryName="item.categoryName"
-                :data-category1Id="item.categoryId"
-                >{{ item.categoryName }}</a
-              >
-            </h3>
-            <div
-              class="item-list clearfix"
-              :style="{ display: currentIndex === index ? 'block' : 'none' }"
-            >
-              <!-- 二级分类 -->
-              <div class="subitem">
-                <dl
-                  class="fore"
-                  v-for="(subitem, index) in item.categoryChild"
-                  :key="subitem.categoryId"
-                >
-                  <dt>
-                    <!-- data-是自定义属性，通过dataset获取 -->
-                    <a
-                      :data-categoryName="subitem.categoryName"
-                      :data-category2Id="subitem.categoryId"
-                      >{{ subitem.categoryName }}</a
-                    >
-                  </dt>
-                  <dd>
-                    <!-- 三级分类 -->
-                    <em
-                      v-for="(subsubitem, index) in subitem.categoryChild"
-                      :key="subsubitem.categoryId"
-                    >
-                      <a
-                        :data-categoryName="subitem.categoryName"
-                        :data-category3Id="subsubitem.categoryId"
-                        >{{ subitem.categoryName }}</a
-                      >
-                    </em>
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -110,12 +118,8 @@ export default {
     //启用节流的方法
     changeIndex: throttle(function (index) {
       this.currentIndex = index;
-    }, 50),
+    }, 20),
 
-    // 鼠标离开一级菜单时
-    leaveIndex(index) {
-      this.currentIndex = -1;
-    },
     goSearch(event) {
       // 获取触发该事件的html节点
       let element = event.target;
@@ -134,11 +138,23 @@ export default {
         } else {
           query.category3id = category3id;
         }
-        // merge
-        location.query = query;
-        // router-link params
-        console.log(location);
+        if (this.$route.params) {
+          location.params = this.$route.params;
+          location.query = query;
+        }
+        // 路由跳转
         this.$router.push(location);
+      }
+    },
+    enterShow() {
+      if (this.$route.path != "/home") {
+        this.show = true;
+      }
+    },
+    leaveShow() {
+      this.currentIndex = -1;
+      if (this.$route.path != "/home") {
+        this.show = false;
       }
     },
   },
@@ -199,6 +215,10 @@ export default {
             a {
               color: #333;
             }
+
+            &.skyblue {
+              background: skyblue;
+            }
           }
 
           .item-list {
@@ -255,11 +275,17 @@ export default {
             }
           }
         }
-
-        .skyblue {
-          background: skyblue;
-        }
       }
+    }
+
+    .sort-enter {
+      height: 0px;
+    }
+    .sort-enter-to {
+      height: 461px;
+    }
+    .sort-enter-active {
+      transition: all 0.5s linear;
     }
   }
 }
