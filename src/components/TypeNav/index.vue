@@ -14,7 +14,8 @@
         <a href="###">秒杀</a>
       </nav>
       <div class="sort">
-        <div class="all-sort-list2">
+        <!-- goSearch()利用 -->
+        <div class="all-sort-list2" @click="goSearch">
           <!-- 一级分类 -->
           <div
             class="item"
@@ -26,9 +27,12 @@
               @mouseenter="changeIndex(index)"
               @mouseleave="leaveIndex(index)"
             >
-              <a href="">{{ item.categoryName }}-{{ index }}</a>
+              <router-link to="/search">{{ item.categoryName }}-{{ index }}</router-link>
             </h3>
-            <div class="item-list clearfix">
+            <div
+              class="item-list clearfix"
+              :style="{ display: currentIndex === index ? 'block' : 'none' }"
+            >
               <!-- 二级分类 -->
               <div
                 class="subitem"
@@ -37,7 +41,7 @@
               >
                 <dl class="fore">
                   <dt>
-                    <a href="">{{ subitem.categoryName }}</a>
+                    <router-link to="/search">{{ subitem.categoryName }}</router-link>
                   </dt>
                   <dd>
                     <!-- 三级分类 -->
@@ -45,7 +49,7 @@
                       v-for="(subsubitem, index) in subitem.categoryChild"
                       :key="subsubitem.categoryId"
                     >
-                      <a href="">{{ subsubitem.categoryName }}</a>
+                      <router-link to="/search">{{ subsubitem.categoryName }}</router-link>
                     </em>
                   </dd>
                 </dl>
@@ -60,6 +64,8 @@
 
 <script>
 import { mapState } from "vuex";
+// 引入lodash进行业务的防抖与节流
+import throttle from "lodash/throttle"; //???为什么不加{}？
 export default {
   name: "TypeNav",
   data() {
@@ -76,21 +82,29 @@ export default {
   computed: {
     ...mapState({
       // 下文的简写形式：
-      // categoryList:state => state.home.categoryList,
-      categoryList: (state) => {
-        return state.home.categoryList;
-      },
+      categoryList:state => state.home.categoryList,
+      // categoryList: (state) => {
+      //   return state.home.categoryList;
+      // },
     }),
   },
 
   methods: {
-    // 鼠标进入一级菜单h3时，
-    changeIndex(index) {
+    // 鼠标进入一级菜单h3时(普通方法)
+    // changeIndex(index) {
+    //   this.currentIndex = index;
+    // },
+    //启用节流的方法
+    changeIndex:throttle(function(index){
       this.currentIndex = index;
-    },
-
-    leaveIndex(index){
+    },50),
+    
+    // 鼠标离开一级菜单时
+    leaveIndex(index) {
       this.currentIndex = -1;
+    },
+    goSearch(){
+      // let node = 
     }
   },
 };
@@ -203,12 +217,6 @@ export default {
                   }
                 }
               }
-            }
-          }
-
-          &:hover {
-            .item-list {
-              display: block;
             }
           }
         }
