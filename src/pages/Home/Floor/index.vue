@@ -24,7 +24,7 @@
             </div>
             <div class="floorBanner">
               <!-- 轮播图的地方 -->
-               <Carsousel :list="list.carouselList" />
+              <Carousel :list="list.carouselList" />
             </div>
             <div class="split">
               <span class="floor-x-line"></span>
@@ -56,8 +56,12 @@
 
 <script>
 export default {
-  name:"Floor",
-}
+  name: "Floor",
+  props: ["list"],
+  components:{
+    // 全局组件Carousel不需要引入
+  },
+};
 </script>
 
 <style scoped lang="less">

@@ -3,10 +3,12 @@ import Vue from 'vue';
 //引入App
 import App from './App.vue';
 
-// 引入全局组件Typenav
+// 引入全局组件
 import TypeNav from './components/TypeNav';
+import Carousel from './components/Carousel';
 // 全局组件注册的语法:Vue.component('组件标签名',构造器对象)
 Vue.component(TypeNav.name, TypeNav)
+Vue.component(Carousel.name, Carousel)
 
 // 引入MockServe.js 的Mock资源
 import '@/mock/mockServe'

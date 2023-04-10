@@ -9,6 +9,6 @@ requests.get('/product/getBaseCategoryList')
 
 // 获取banner数据
 export const reqBannerList = () => 
-requestsMock.get('/banner') ;// 获取floor数据
+requestsMock.get('/banner') ;
 export const reqFloorList = () =>
-requestsMock.get('/floor')  ;
+requestsMock.get('/floor')  ;// 获取floor数据

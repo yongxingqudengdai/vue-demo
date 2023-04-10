@@ -7,7 +7,7 @@ const state = {
   // 三级菜单数据，初始化数组
   categoryList:[],
   bannerList:[],
-  floorlist:[],
+  floorList:[],
 };
 const mutations = {
   ADD(state) {
@@ -24,7 +24,7 @@ const mutations = {
     state.bannerList = value;
   },
   FLOORLIST(state,value){
-    state.floorlist = value;
+    state.floorList = value;
   }
 };
 const actions = {
@@ -48,6 +48,7 @@ const actions = {
   // 通过mockapi获取floor数据
   async floorList(context){
     let result = await reqFloorList();
+    console.log("floorList:");
     console.log(result);
     if(result.code === 200){
       context.commit('FLOORLIST',result.data);

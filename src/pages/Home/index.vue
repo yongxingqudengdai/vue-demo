@@ -6,13 +6,12 @@
     <Recommand></Recommand>
     <Rank></Rank>
     <Like></Like>
-    <!-- 未完成 -->
-    <!-- <Floor></Floor>
-    <Floor></Floor> -->
+    <!-- Floor组件 -->
+    <Floor v-for="(item,index) in floorList" :key="item.id" :list="item"> </Floor>
     <Brand></Brand>
-    <button @click="ADD">+1</button>
+    <!-- <button @click="ADD">+1</button>
     <span>{{ count }}</span>
-    <button @click="MINUS">-1</button>
+    <button @click="MINUS">-1</button> -->
   </div>
 </template>
 
@@ -35,12 +34,17 @@ export default {
     Floor,
     Brand,
   },
+  mounted(){
+    // 派发action获取floor.json数据
+    this.$store.dispatch("home/floorList");
+  },
   computed: {
     ...mapState("home", ["count"]),
     // 正常return写法
     //   count() {
     //     return this.$store.state.count;
     //   },
+    ...mapState("home",["floorList"])
   },
   methods: {
     ...mapMutations("home", { ADD: "ADD", MINUS: "MINUS" }),
