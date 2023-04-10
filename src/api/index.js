@@ -11,4 +11,7 @@ requests.get('/product/getBaseCategoryList')
 export const reqBannerList = () => 
 requestsMock.get('/banner') ;
 export const reqFloorList = () =>
-requestsMock.get('/floor')  ;// 获取floor数据
+requestsMock.get('/floor')  ; // 获取floor数据
+
+// params至少是一个空对象
+export const reqGetSearchInfo = (params)=>requests({url:"/list", method:"post", data:params});
