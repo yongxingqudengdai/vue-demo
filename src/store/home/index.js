@@ -1,12 +1,13 @@
 // 引入api服务
-import { reqBannerList,reqCategoryList } from '@/api';
+import { reqBannerList,reqCategoryList, reqFloorList } from '@/api';
 
 // home模块的小仓库
 const state = {
   count: 1 ,
   // 三级菜单数据，初始化数组
   categoryList:[],
-  bannerList:[]
+  bannerList:[],
+  floorlist:[],
 };
 const mutations = {
   ADD(state) {
@@ -21,6 +22,9 @@ const mutations = {
   },
   BANNERLIST(state,value){
     state.bannerList = value;
+  },
+  FLOORLIST(state,value){
+    state.floorlist = value;
   }
 };
 const actions = {
@@ -40,6 +44,15 @@ const actions = {
       context.commit('BANNERLIST',result.data);
     }
   },
+
+  // 通过mockapi获取floor数据
+  async floorList(context){
+    let result = await reqFloorList();
+    console.log(result);
+    if(result.code === 200){
+      context.commit('FLOORLIST',result.data);
+    }
+  }
 };
 
 const getters = {};

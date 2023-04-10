@@ -4,7 +4,7 @@
     <div class="sortList clearfix">
       <div class="center">
         <!--banner轮播-->
-        <div class="swiper-container" id="mySwiper">
+        <div class="swiper-container" ref="mySwiper">
           <div class="swiper-wrapper">
             <div
               class="swiper-slide"
@@ -98,31 +98,37 @@
 <script>
 import { mapState } from "vuex";
 // 引入swiper.js。样式在main.js入口处已引用
-import Swiper from 'swiper';
+import Swiper from "swiper";
 
 export default {
   name: "ListContainer",
   mounted() {
     // 派发action,通过Vuex发起ajax请求，把数据存储在store
     this.$store.dispatch("home/bannerList");
-    setTimeout(() => {
-      // method1 通过定时器让swiper实例最后生成，防止异步问题
-      var mySwiper = new Swiper(document.querySelector(".swiper-container"),{
-        loop:true,
-        pegination:{
-          el:".swiper-pagination",
-        },
-        navigation:{
-          nextEl:".swiper-button-next",
-          prevEl:".swiper-button-prev",
-        },
-      });
-    }, 2000);
   },
   computed: {
     ...mapState({
       bannerList: (state) => state.home.bannerList,
     }),
+  },
+  watch: {
+    bannerList: {
+      handler(newValue, oldValue) {
+        this.$nextTick(() => {
+          var mySwiper = new Swiper(this.$refs.mySwiper, {
+            loop: true,
+            pagination: {
+              el: ".swiper-pagination",
+              clickable: true
+            },
+            navigation: {
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            },
+          });
+        });
+      },
+    },
   },
 };
 </script>
