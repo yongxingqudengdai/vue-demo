@@ -14,15 +14,10 @@
           </ul>
           <!-- 后面的标签 -->
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <li class="with-x" v-if=""></li>
           </ul>
         </div>
-        <!-- 未开发 -->
         <SearchSelector />
-
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
