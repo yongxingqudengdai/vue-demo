@@ -20,6 +20,7 @@ requests.interceptors.request.use((config) => {
 
 // 相应拦截器
 requests.interceptors.response.use((res) => {
+  nprogress.done();
   return res.data;
 }, (err) => {
   return promise.reject(new Error('Faile'))

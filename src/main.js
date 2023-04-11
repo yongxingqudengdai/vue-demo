@@ -14,8 +14,6 @@ Vue.component(Carousel.name, Carousel)
 import '@/mock/mockServe'
 // 引入swiper的css样式
 import 'swiper/css/swiper.css'
-import {reqGetSearchInfo} from '@/api'
-console.log(reqGetSearchInfo({}));
 
 // 引入vueRouter
 import VueRouter from 'vue-router'

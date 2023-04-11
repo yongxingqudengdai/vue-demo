@@ -50,7 +50,7 @@
                         <!-- 三级分类 -->
                         <em
                           v-for="(subsubitem, index) in subitem.categoryChild"
-                          :key="subsubitem.catsegoryId"
+                          :key="subsubitem.categoryId"
                         >
                           <a
                             :data-categoryName="subitem.categoryName"
@@ -126,6 +126,7 @@ export default {
 
     goSearch(event) {
       // 获取触发该事件的html节点
+      console.log('gosearch:',event.target);
       let element = event.target;
       // dataset获取节点上的自定义数据属性
       // 花括号表示解构赋值语法
@@ -133,7 +134,7 @@ export default {
       // 如果有categoryname属性那就是a标签
       if (categoryname) {
         let location = { name: "search" }; //rouer.push
-        let query = { categoryName: categoryname };
+        let query = { categoryname: categoryname };
         if (category1id) {
           query.category1id = category1id;
         } else if (category2id) {
@@ -209,6 +210,9 @@ export default {
       z-index: 999;
 
       .all-sort-list2 {
+        // 一整块全是点击指针，先这么简单写写
+        cursor: pointer;
+      
         .item {
           h3 {
             line-height: 30px;

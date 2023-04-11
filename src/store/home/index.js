@@ -31,6 +31,7 @@ const actions = {
   // 通过api获取服务器数据
   async categoryList(context){
     let result = await reqCategoryList();
+    console.log("categoryList:",result);
     if(result.code === 200){
       // 执行mutation方法
       context.commit('CATEGORYLIST',result.data);
@@ -39,7 +40,7 @@ const actions = {
   // 通过mockapi获取banner数据
   async bannerList(context){
     let result = await reqBannerList();
-    console.log(result);
+    console.log("bannerList:", result);
     if(result.code === 200){
       context.commit('BANNERLIST',result.data);
     }
@@ -48,8 +49,7 @@ const actions = {
   // 通过mockapi获取floor数据
   async floorList(context){
     let result = await reqFloorList();
-    console.log("floorList:");
-    console.log(result);
+    console.log("floorList:",result);
     if(result.code === 200){
       context.commit('FLOORLIST',result.data);
     }
