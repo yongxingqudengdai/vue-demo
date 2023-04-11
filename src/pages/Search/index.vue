@@ -14,9 +14,12 @@
           </ul>
           <!-- 后面的标签 -->
           <ul class="fl sui-tag">
+            <!-- 三级列表的面包屑 -->
             <li class="with-x" v-if="searchParams.categoryName">{{ searchParams.categoryName }}<i @click="removeCategoryName">x</i>
             </li>
-            
+            <!-- 关键字面包屑 -->
+            <li class="with-x" v-if="searchParams.keyword">{{ searchParams.keyword }}<i @click="removeKeyword">x</i>
+            </li>
           </ul>
         </div>
         <SearchSelector />
@@ -177,7 +180,7 @@ export default {
     getData() {
       this.$store.dispatch("search/searchList", this.searchParams);
     },
-    // 删除面包屑标签
+    // 删除面包屑标签(三级分类)
     removeCategoryName() {
       // 因为使用了watch属性控制api请求，所以要用undefined清零不要用引号
       this.searchParams.categoryName = undefined;
@@ -190,6 +193,15 @@ export default {
         this.$router.push({name:"search", params: this.$route.params})
       }
     },
+    // 删除面包屑标签（搜索关键字）
+    removeKeyword(){
+      this.searchParams.keyword = undefined;
+      this.getData();
+      // 1.重新提交push
+
+      // 2.header组件中的text关键字置空（采用全局事件总线$bus方法）
+
+    }
   },
   computed: {
     ...mapGetters({
