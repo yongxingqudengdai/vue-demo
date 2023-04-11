@@ -14,7 +14,9 @@
           </ul>
           <!-- 后面的标签 -->
           <ul class="fl sui-tag">
-            <li class="with-x" v-if="searchParams.categoryname">{{ searchParams.categoryname }}<i>x</i></li>
+            <li class="with-x" v-if="searchParams.categoryName">{{ searchParams.categoryName }}<i @click="removeCategoryName">x</i>
+            </li>
+            
           </ul>
         </div>
         <SearchSelector />
@@ -47,7 +49,11 @@
           <!-- 商品列表 -->
           <div class="goods-list">
             <ul class="yui3-g">
-              <li class="yui3-u-1-5" v-for="(good,index) in goodsList" :key="good.id">
+              <li
+                class="yui3-u-1-5"
+                v-for="(good, index) in goodsList"
+                :key="good.id"
+              >
                 <div class="list-wrap">
                   <div class="p-img">
                     <a href="item.html" target="_blank"
@@ -131,16 +137,16 @@ export default {
     // 搜索筛选子组件
     SearchSelector,
   },
-  data(){
+  data() {
     return {
       // 搜索参数
-      searchParams:{
+      searchParams: {
         //产品相应的id
-        category1id: "",
-        category2id: "",
-        category3id: "",
+        category1Id: "",
+        category2Id: "",
+        category3Id: "",
         //产品的名字
-        categoryname: "",
+        categoryName: "",
         //搜索的关键字
         keyword: "",
         //排序:初始状态应该是综合且降序
@@ -152,14 +158,14 @@ export default {
         //平台属性的操作
         props: [],
         //品牌
-        trademark: "",        
-      }
-    }
+        trademark: "",
+      },
+    };
   },
-  beforeMount(){
+  beforeMount() {
     // 合并多个对象的键值对（对请求参数进行整理）
     Object.assign(this.searchParams, this.$route.query, this.$route.params);
-    console.log('发请求之前的searchParams',this.searchParams);
+    console.log("发请求之前的searchParams", this.searchParams);
     // 相当于：
     // this.searchParams.category1Id = this.$route.query.category1Id ;
     // ......
@@ -167,24 +173,41 @@ export default {
   mounted() {
     this.getData();
   },
-  methods:{
-    getData(){
+  methods: {
+    getData() {
       this.$store.dispatch("search/searchList", this.searchParams);
-    }
+    },
+    // 删除面包屑标签
+    removeCategoryName() {
+      // 因为使用了watch属性控制api请求，所以要用undefined清零不要用引号
+      this.searchParams.categoryName = undefined;
+      this.searchParams.category1Id = undefined;
+      this.searchParams.category2Id = undefined;
+      this.searchParams.category3Id = undefined;
+      this.getData();
+      // params没有参数时为空对象，if内仍然为true
+      if(this.$route.params){
+        this.$router.push({name:"search", params: this.$route.params})
+      }
+    },
   },
   computed: {
-    ...mapGetters({goodsList:'search/goodsList',attrsList:'search/attrsList',trademarkList:'search/trademarkList'}),
+    ...mapGetters({
+      goodsList: "search/goodsList",
+      attrsList: "search/attrsList",
+      trademarkList: "search/trademarkList",
+    }),
   },
-  watch:{
-    $route(newValue,oldValue){
+  watch: {
+    $route(newValue, oldValue) {
       Object.assign(this.searchParams, this.$route.query, this.$route.params);
       this.getData();
       // getData以后清空，防止三级列表id数据混乱
-      this.searchParams.category1Id = '';
-      this.searchParams.category2Id = '';
-      this.searchParams.category3Id = '';
-      console.log("searchParams（get后）",this.searchParams);
-    }
+      this.searchParams.category1Id = "";
+      this.searchParams.category2Id = "";
+      this.searchParams.category3Id = "";
+      console.log("searchParams（get后）", this.searchParams);
+    },
   },
 };
 </script>

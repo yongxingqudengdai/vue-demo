@@ -13,7 +13,7 @@ const actions = {
   // params={}是默认参数语法
   async searchList(context, params = {}) {
     let result = await reqGetSearchInfo(params);
-    console.log("searchList",result);
+    console.log("searchList请求",result);
     if(result.code === 200){
       // 执行mutation方法
       context.commit('SEARCHLIST',result.data);

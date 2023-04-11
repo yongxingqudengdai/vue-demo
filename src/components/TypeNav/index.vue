@@ -20,8 +20,8 @@
                   @mouseenter="changeIndex(index)"
                 >
                   <a
-                    :data-categoryName="item.categoryName"
-                    :data-category1Id="item.categoryId"
+                    :data-category-name="item.categoryName"
+                    :data-category1-id="item.categoryId"
                     >{{ item.categoryName }}</a
                   >
                 </h3>
@@ -41,8 +41,8 @@
                       <dt>
                         <!-- data-是自定义属性，通过dataset获取 -->
                         <a
-                          :data-categoryName="subitem.categoryName"
-                          :data-category2Id="subitem.categoryId"
+                          :data-category-name="subitem.categoryName"
+                          :data-category2-id="subitem.categoryId"
                           >{{ subitem.categoryName }}</a
                         >
                       </dt>
@@ -53,8 +53,8 @@
                           :key="subsubitem.categoryId"
                         >
                           <a
-                            :data-categoryName="subitem.categoryName"
-                            :data-category3Id="subsubitem.categoryId"
+                            :data-category-name="subitem.categoryName"
+                            :data-category3-id="subsubitem.categoryId"
                             >{{ subsubitem.categoryName }}</a
                           >
                         </em>
@@ -130,17 +130,17 @@ export default {
       let element = event.target;
       // dataset获取节点上的自定义数据属性
       // 花括号表示解构赋值语法
-      let { categoryname, category1id, category2id, category3id } = element.dataset;
+      let { categoryName, category1Id, category2Id, category3Id } = element.dataset;
       // 如果有categoryname属性那就是a标签
-      if (categoryname) {
+      if (categoryName) {
         let location = { name: "search" }; //rouer.push
-        let query = { categoryname: categoryname };
-        if (category1id) {
-          query.category1id = category1id;
-        } else if (category2id) {
-          query.category2id = category2id;
+        let query = { categoryName: categoryName };
+        if (category1Id) {
+          query.category1Id = category1Id;
+        } else if (category2Id) {
+          query.category2Id = category2Id;
         } else {
-          query.category3id = category3id;
+          query.category3Id = category3Id;
         }
         if (this.$route.params) {
           // 搜索框用params，三级导航用query
