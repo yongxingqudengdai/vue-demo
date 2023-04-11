@@ -33,6 +33,10 @@ Vue.use(VueRouter)
 new Vue({
 	el: '#app',
 	render: h => h(App),
+	// 安装全局事件总线$bus（激活）
+	beforeCreate(){
+		Vue.prototype.$bus = this;
+	},
 	router,
 	store
 })

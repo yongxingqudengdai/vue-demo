@@ -31,7 +31,7 @@ const actions = {
   // 通过api获取服务器数据
   async categoryList(context){
     let result = await reqCategoryList();
-    console.log("categoryList:",result);
+    console.log("(Vuex action)categoryList的数据是:",result);
     if(result.code === 200){
       // 执行mutation方法
       context.commit('CATEGORYLIST',result.data);
@@ -40,7 +40,7 @@ const actions = {
   // 通过mockapi获取banner数据
   async bannerList(context){
     let result = await reqBannerList();
-    console.log("bannerList:", result);
+    console.log("(Vuex action)bannerList的数据是:", result);
     if(result.code === 200){
       context.commit('BANNERLIST',result.data);
     }

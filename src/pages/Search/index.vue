@@ -168,7 +168,7 @@ export default {
   beforeMount() {
     // 合并多个对象的键值对（对请求参数进行整理）
     Object.assign(this.searchParams, this.$route.query, this.$route.params);
-    console.log("发请求之前的searchParams", this.searchParams);
+    console.log("beforeMount的searchParams：", this.searchParams);
     // 相当于：
     // this.searchParams.category1Id = this.$route.query.category1Id ;
     // ......
@@ -197,10 +197,13 @@ export default {
     removeKeyword(){
       this.searchParams.keyword = undefined;
       this.getData();
-      // 1.重新提交push
-
-      // 2.header组件中的text关键字置空（采用全局事件总线$bus方法）
-
+      // 1.header组件中的text关键字置空（采用全局事件总线$bus方法）
+        //通知header组件进行全局事件操作
+      this.$bus.$emit("clear");
+      // 2.重新提交push,并且把params去掉，三级列表的query留下
+      if(this.$route.query){  
+        this.$router.push({name:"search",query: this.$route.query} )
+      }
     }
   },
   computed: {
@@ -211,14 +214,20 @@ export default {
     }),
   },
   watch: {
-    $route(newValue, oldValue) {
-      Object.assign(this.searchParams, this.$route.query, this.$route.params);
+    async $route(newValue, oldValue) {
+      console.log("合并前的query:",this.$route.query);
+      console.log("合并前的params:",this.$route.params);
+      await new Promise((resolve) =>{
+        Object.assign(this.searchParams, this.$route.query, this.$route.params);
+        resolve();
+      });
+      console.log("Test",this.searchParams);
+      //Object.assign(this.searchParams, this.$route.query, this.$route.params);
       this.getData();
       // getData以后清空，防止三级列表id数据混乱
-      this.searchParams.category1Id = "";
-      this.searchParams.category2Id = "";
-      this.searchParams.category3Id = "";
-      console.log("searchParams（get后）", this.searchParams);
+      this.searchParams.category1Id = undefined;
+      this.searchParams.category2Id = undefined;
+      this.searchParams.category3Id = undefined;
     },
   },
 };
