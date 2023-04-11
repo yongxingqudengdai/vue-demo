@@ -14,7 +14,7 @@
           </ul>
           <!-- 后面的标签 -->
           <ul class="fl sui-tag">
-            <li class="with-x" v-if=""></li>
+            <li class="with-x" v-if="searchParams.categoryname">{{ searchParams.categoryname }}<i>x</i></li>
           </ul>
         </div>
         <SearchSelector />
@@ -136,11 +136,11 @@ export default {
       // 搜索参数
       searchParams:{
         //产品相应的id
-        category1Id: "",
-        category2Id: "",
-        category3Id: "",
+        category1id: "",
+        category2id: "",
+        category3id: "",
         //产品的名字
-        categoryName: "",
+        categoryname: "",
         //搜索的关键字
         keyword: "",
         //排序:初始状态应该是综合且降序
