@@ -35,23 +35,12 @@
             <div class="navbar-inner filter">
               <!-- 价格结构 -->
               <ul class="sui-nav">
-                <li class="active">
+                <li :class="{ active:isOne }" @click="changeOrder('1')">
                   <a href="#">综合</a>
                 </li>
+                
                 <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                  <a href="#">价格</a>
                 </li>
               </ul>
             </div>
@@ -243,6 +232,11 @@ export default {
         this.searchParams.props.push(props);
       //push方法在数组末尾添加属性，不能使用赋值方法会直接覆盖原参数
       this.getData();
+    },
+    changeOrder(params){
+      // 1.如果是点的一个按钮，切换升序/降序
+      // 2.不是一个按钮
+      
     }
   },
   computed: {
@@ -251,6 +245,12 @@ export default {
       attrsList: "search/attrsList",
       trademarkList: "search/trademarkList",
     }),
+    isOne(){
+      return this.searchParams.order.indexOf("1") != -1;
+    },
+    isTwo(){
+      return this.searchParams.order.indexOf("2") != -1;
+    }
   },
   watch: {
     async $route(newValue, oldValue) {
