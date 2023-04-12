@@ -20,9 +20,16 @@
             <!-- 关键字面包屑 -->
             <li class="with-x" v-if="searchParams.keyword">{{ searchParams.keyword }}<i @click="removeKeyword">x</i>
             </li>
+            <!-- trademark的面包屑 -->
+            <li class="with-x" v-if="searchParams.trademark">{{ searchParams.trademark.split(":")[1] }}<i @click="removeTradeMark">x</i>
+            </li>
+            <!-- 详细参数的面包屑 -->
+            <li class="with-x" v-for="(item,index) in searchParams.props" :key="index">{{ item.split(":")[1] }}<i @click="removeAttr(index)">x</i>
+            </li>
           </ul>
         </div>
-        <SearchSelector />
+        <!-- @eventA="eventB"  子组件事件A触发时，调用父组件B事件 -->
+        <SearchSelector @trademarkInfo="trademarkInfo" @attrInfo="attrInfo"/>
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
@@ -145,9 +152,9 @@ export default {
       // 搜索参数
       searchParams: {
         //产品相应的id
-        category1Id: "",
-        category2Id: "",
-        category3Id: "",
+        category1Id: undefined,
+        category2Id: undefined,
+        category3Id: undefined,
         //产品的名字
         categoryName: "",
         //搜索的关键字
@@ -179,6 +186,7 @@ export default {
   methods: {
     getData() {
       this.$store.dispatch("search/searchList", this.searchParams);
+      console.log("(getData)this.searchParams:",this.searchParams);
     },
     // 删除面包屑标签(三级分类)
     removeCategoryName() {
@@ -204,6 +212,37 @@ export default {
       if(this.$route.query){  
         this.$router.push({name:"search",query: this.$route.query} )
       }
+    },
+    // 删除面包屑标签（trademark品牌）
+    removeTradeMark(){
+      this.searchParams.trademark = undefined;
+      // 不需要push，因为和路由参数没关系
+      this.getData();
+    },
+    // 删除面包屑标签（产品详细参数）
+    removeAttr(index){
+      // ***splice方法
+      this.searchParams.props.splice(index,1);
+      this.getData();
+    },
+    // 点击选中品牌标签并返回搜索结果
+    trademarkInfo(item){
+      console.log('面包屑tradetag的item内容:', item);
+      // 通过$字符串模板匹配来拼接字符串，得到键值对
+      this.searchParams.trademark = `${item.tmId}:${item.tmName}`;
+      //再次发请求获取search模块列表数据进行展示
+      this.getData();
+    },
+    // 点击选中产品细节参数
+    attrInfo(attr,attrValue){
+      console.log('产品细节参数attr:',attr,'attrValue:',attrValue);
+      // 整理参数(107:3000mAh以上:电池容量)
+      let props = `${attr.attrId}:${attrValue}:${attr.attrName}`;
+      // 反复点的时候去重(匹配不到的时候才调用push方法)
+      if(this.searchParams.props.indexOf(props) == -1) //“==”会进行类型转换后再判断是否相等
+        this.searchParams.props.push(props);
+      //push方法在数组末尾添加属性，不能使用赋值方法会直接覆盖原参数
+      this.getData();
     }
   },
   computed: {
@@ -215,16 +254,16 @@ export default {
   },
   watch: {
     async $route(newValue, oldValue) {
-      console.log("合并前的query:",this.$route.query);
-      console.log("合并前的params:",this.$route.params);
+      // console.log("合并前的query:",this.$route.query);
+      // console.log("合并前的params:",this.$route.params);
       await new Promise((resolve) =>{
         Object.assign(this.searchParams, this.$route.query, this.$route.params);
         resolve();
       });
-      console.log("Test",this.searchParams);
       //Object.assign(this.searchParams, this.$route.query, this.$route.params);
       this.getData();
       // getData以后清空，防止三级列表id数据混乱
+      // console.log("清空前的searchparams",this.searchParams);//**为什么3个defined？？
       this.searchParams.category1Id = undefined;
       this.searchParams.category2Id = undefined;
       this.searchParams.category3Id = undefined;

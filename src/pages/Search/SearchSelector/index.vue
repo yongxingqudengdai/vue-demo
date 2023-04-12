@@ -4,8 +4,9 @@
     <div class="type-wrap logo">
       <div class="fl key brand">品牌</div>
       <div class="value logos">
+        <!-- 品牌信息 -->
         <ul class="logo-list">
-          <li>索尼（SONY）</li>
+          <li v-for="(item,index) in trademarkList" :key="item.tmId" @click="tradeMarkHandler(item)">{{ item.tmName }}</li>
         </ul>
       </div>
       <div class="ext">
@@ -17,8 +18,8 @@
       <div class="fl key">{{item.attrName}}</div>
       <div class="fl value">
         <ul class="type-list">
-          <li v-for="(item,index) in item.attrValueList" :key=index>
-            <a>{{ item }}</a>
+          <li v-for="(subitem,index) in item.attrValueList" :key="index" @click="attrInfo(item,subitem)">
+            <a>{{ subitem }}</a>
           </li>
         </ul>
       </div>
@@ -34,6 +35,19 @@ export default {
   name:'SearchSelector',
   computed:{
     ...mapGetters({attrsList:'search/attrsList',trademarkList:'search/trademarkList'}),
+  },
+  methods:{
+    // 选中品牌标签时更新搜索参数并getData
+    tradeMarkHandler(item){
+      // 1.整理参数
+        // 全局事件总线
+      this.$emit('trademarkInfo',item);
+      // 2.搜索业务
+    },
+    // 选中细节参数标签时更新搜索参数并getData
+    attrInfo(attr,attrValue){
+      this.$emit("attrInfo",attr,attrValue);
+    }
   }
 }
 </script>
