@@ -6,9 +6,11 @@ import App from './App.vue';
 // 引入全局组件
 import TypeNav from './components/TypeNav';
 import Carousel from './components/Carousel';
+import Pagination from './components/Pagination';
 // 全局组件注册的语法:Vue.component('组件标签名',构造器对象)
 Vue.component(TypeNav.name, TypeNav)
 Vue.component(Carousel.name, Carousel)
+Vue.component(Pagination.name, Pagination)
 
 // 引入MockServe.js 的Mock资源
 import '@/mock/mockServe'
@@ -34,7 +36,7 @@ new Vue({
 	el: '#app',
 	render: h => h(App),
 	// 安装全局事件总线$bus（激活）
-	beforeCreate(){
+	beforeCreate() {
 		Vue.prototype.$bus = this;
 	},
 	router,

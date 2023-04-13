@@ -101,35 +101,8 @@
             </ul>
           </div>
           <!-- 分页器（未开发） -->
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+          <!-- 数据1.当前页码 2.单页面结果显示数量 3.总结果数量 4.continues（连续页码的数字(奇数)）-->
+          <Pagination :pageNo="31" :pageSize="3" :total="91" :continues="5"/>
         </div>
       </div>
     </div>

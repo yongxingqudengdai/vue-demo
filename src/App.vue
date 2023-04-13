@@ -14,6 +14,7 @@ import Header from './components/Header'
 //只写文件名Footer，自动定位Footer.vue
 import Footer from './components/Footer/Footer'
 
+
 export default {
   name: 'App',
   components: {Header,Footer},
