@@ -1,6 +1,7 @@
 <template>
   <div>
     <!-- typenav三级列表 -->
+    <h3>{{ total }}</h3>
     <type-nav></type-nav>
     <div class="main">
       <div class="py-container">
@@ -46,10 +47,28 @@
               <!-- 价格结构 -->
               <ul class="sui-nav">
                 <li :class="{ active: isOne }" @click="changeOrder('1')">
-                  <a href="#">综合<span v-show="isOne" class="iconfont" :class="{'icon-ArrowUp':isAsc,'icon-arrowdown':isDesc}"></span></a>
+                  <a href="#"
+                    >综合<span
+                      v-show="isOne"
+                      class="iconfont"
+                      :class="{
+                        'icon-ArrowUp': isAsc,
+                        'icon-arrowdown': isDesc,
+                      }"
+                    ></span
+                  ></a>
                 </li>
                 <li :class="{ active: isTwo }" @click="changeOrder('2')">
-                  <a href="#">价格<span v-show="isTwo" class="iconfont" :class="{'icon-ArrowUp':isAsc,'icon-arrowdown':isDesc}"></span></a>
+                  <a href="#"
+                    >价格<span
+                      v-show="isTwo"
+                      class="iconfont"
+                      :class="{
+                        'icon-ArrowUp': isAsc,
+                        'icon-arrowdown': isDesc,
+                      }"
+                    ></span
+                  ></a>
                 </li>
               </ul>
             </div>
@@ -102,7 +121,14 @@
           </div>
           <!-- 分页器（未开发） -->
           <!-- 数据1.当前页码 2.单页面结果显示数量 3.总结果数量 4.continues（连续页码的数字(奇数)）-->
-          <Pagination :pageNo="31" :pageSize="3" :total="91" :continues="5"/>
+          <!-- total参数在result.data内 -->
+          <Pagination
+            :pageNo="searchParams.pageNo"
+            :pageSize="searchParams.pageSize"
+            :total="total"
+            :continues="5"
+            @getPageNo="getPageNo"
+          />
         </div>
       </div>
     </div>
@@ -110,7 +136,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import SearchSelector from "./SearchSelector";
 export default {
   name: "Search",
@@ -133,7 +159,7 @@ export default {
         //排序:初始状态应该是综合且降序
         order: "1:desc",
         //第几页
-        pageNo: 1,
+        pageNo: 10,
         //每一页展示条数
         pageSize: 3,
         //平台属性的操作
@@ -216,6 +242,7 @@ export default {
       //push方法在数组末尾添加属性，不能使用赋值方法会直接覆盖原参数
       this.getData();
     },
+    // 改变排序种类或排序方式
     changeOrder(Class) {
       let originOrder = this.searchParams.order;
       let originClass = originOrder.split(":")[0];
@@ -231,6 +258,11 @@ export default {
       this.searchParams.order = newOrder;
       this.getData();
     },
+    // 
+    getPageNo(pageNo){
+      this.searchParams.pageNo = pageNo;
+      this.getData();
+    }
   },
   computed: {
     ...mapGetters({
@@ -244,12 +276,16 @@ export default {
     isTwo() {
       return this.searchParams.order.indexOf("2") != -1;
     },
-    isAsc(){
+    isAsc() {
       return this.searchParams.order.split(":")[1] == "asc";
     },
-    isDesc(){
+    isDesc() {
       return this.searchParams.order.split(":")[1] == "desc";
     },
+    // 获取total数据,通过result.data获得，保存在state的searchList下
+    ...mapState({
+      total: (state) => state.search.searchList.total,
+    }),
   },
   watch: {
     async $route(newValue, oldValue) {

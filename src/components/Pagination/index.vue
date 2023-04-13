@@ -1,10 +1,9 @@
 <template>
   <div>
     <div class="pagination">
-      <button v-if="startNumAndEndNum.start >1">1</button>
-      <button>上一页</button>
+      <button :disabled="pageNo == 1" @click="$emit('getPageNo',pageNo - 1)">上一页</button>
+      <button v-if="startNumAndEndNum.start >1" @click="$emit('getPageNo', 1)">1</button>
       <button v-if="startNumAndEndNum.start >= 3">···</button>
-
       <button v-for="(index) in continues" :key="index">
         {{ startNumAndEndNum.start +index -1 }}
       </button>
