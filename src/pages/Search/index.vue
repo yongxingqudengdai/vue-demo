@@ -15,32 +15,41 @@
           <!-- 后面的标签 -->
           <ul class="fl sui-tag">
             <!-- 三级列表的面包屑 -->
-            <li class="with-x" v-if="searchParams.categoryName">{{ searchParams.categoryName }}<i @click="removeCategoryName">x</i>
+            <li class="with-x" v-if="searchParams.categoryName">
+              {{ searchParams.categoryName
+              }}<i @click="removeCategoryName">x</i>
             </li>
             <!-- 关键字面包屑 -->
-            <li class="with-x" v-if="searchParams.keyword">{{ searchParams.keyword }}<i @click="removeKeyword">x</i>
+            <li class="with-x" v-if="searchParams.keyword">
+              {{ searchParams.keyword }}<i @click="removeKeyword">x</i>
             </li>
             <!-- trademark的面包屑 -->
-            <li class="with-x" v-if="searchParams.trademark">{{ searchParams.trademark.split(":")[1] }}<i @click="removeTradeMark">x</i>
+            <li class="with-x" v-if="searchParams.trademark">
+              {{ searchParams.trademark.split(":")[1]
+              }}<i @click="removeTradeMark">x</i>
             </li>
             <!-- 详细参数的面包屑 -->
-            <li class="with-x" v-for="(item,index) in searchParams.props" :key="index">{{ item.split(":")[1] }}<i @click="removeAttr(index)">x</i>
+            <li
+              class="with-x"
+              v-for="(item, index) in searchParams.props"
+              :key="index"
+            >
+              {{ item.split(":")[1] }}<i @click="removeAttr(index)">x</i>
             </li>
           </ul>
         </div>
         <!-- @eventA="eventB"  子组件事件A触发时，调用父组件B事件 -->
-        <SearchSelector @trademarkInfo="trademarkInfo" @attrInfo="attrInfo"/>
+        <SearchSelector @trademarkInfo="trademarkInfo" @attrInfo="attrInfo" />
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <!-- 价格结构 -->
               <ul class="sui-nav">
-                <li :class="{ active:isOne }" @click="changeOrder('1')">
-                  <a href="#">综合</a>
+                <li :class="{ active: isOne }" @click="changeOrder('1')">
+                  <a href="#">综合<span v-show="isOne" class="iconfont" :class="{'icon-ArrowUp':isAsc,'icon-arrowdown':isDesc}"></span></a>
                 </li>
-                
-                <li>
-                  <a href="#">价格</a>
+                <li :class="{ active: isTwo }" @click="changeOrder('2')">
+                  <a href="#">价格<span v-show="isTwo" class="iconfont" :class="{'icon-ArrowUp':isAsc,'icon-arrowdown':isDesc}"></span></a>
                 </li>
               </ul>
             </div>
@@ -175,7 +184,7 @@ export default {
   methods: {
     getData() {
       this.$store.dispatch("search/searchList", this.searchParams);
-      console.log("(getData)this.searchParams:",this.searchParams);
+      console.log("(getData)this.searchParams:", this.searchParams);
     },
     // 删除面包屑标签(三级分类)
     removeCategoryName() {
@@ -186,58 +195,69 @@ export default {
       this.searchParams.category3Id = undefined;
       this.getData();
       // params没有参数时为空对象，if内仍然为true
-      if(this.$route.params){
-        this.$router.push({name:"search", params: this.$route.params})
+      if (this.$route.params) {
+        this.$router.push({ name: "search", params: this.$route.params });
       }
     },
     // 删除面包屑标签（搜索关键字）
-    removeKeyword(){
+    removeKeyword() {
       this.searchParams.keyword = undefined;
       this.getData();
       // 1.header组件中的text关键字置空（采用全局事件总线$bus方法）
-        //通知header组件进行全局事件操作
+      //通知header组件进行全局事件操作
       this.$bus.$emit("clear");
       // 2.重新提交push,并且把params去掉，三级列表的query留下
-      if(this.$route.query){  
-        this.$router.push({name:"search",query: this.$route.query} )
+      if (this.$route.query) {
+        this.$router.push({ name: "search", query: this.$route.query });
       }
     },
     // 删除面包屑标签（trademark品牌）
-    removeTradeMark(){
+    removeTradeMark() {
       this.searchParams.trademark = undefined;
       // 不需要push，因为和路由参数没关系
       this.getData();
     },
     // 删除面包屑标签（产品详细参数）
-    removeAttr(index){
+    removeAttr(index) {
       // ***splice方法
-      this.searchParams.props.splice(index,1);
+      this.searchParams.props.splice(index, 1);
       this.getData();
     },
     // 点击选中品牌标签并返回搜索结果
-    trademarkInfo(item){
-      console.log('面包屑tradetag的item内容:', item);
+    trademarkInfo(item) {
+      console.log("面包屑tradetag的item内容:", item);
       // 通过$字符串模板匹配来拼接字符串，得到键值对
       this.searchParams.trademark = `${item.tmId}:${item.tmName}`;
       //再次发请求获取search模块列表数据进行展示
       this.getData();
     },
     // 点击选中产品细节参数
-    attrInfo(attr,attrValue){
-      console.log('产品细节参数attr:',attr,'attrValue:',attrValue);
+    attrInfo(attr, attrValue) {
+      console.log("产品细节参数attr:", attr, "attrValue:", attrValue);
       // 整理参数(107:3000mAh以上:电池容量)
       let props = `${attr.attrId}:${attrValue}:${attr.attrName}`;
       // 反复点的时候去重(匹配不到的时候才调用push方法)
-      if(this.searchParams.props.indexOf(props) == -1) //“==”会进行类型转换后再判断是否相等
+      if (this.searchParams.props.indexOf(props) == -1)
+        //“==”会进行类型转换后再判断是否相等
         this.searchParams.props.push(props);
       //push方法在数组末尾添加属性，不能使用赋值方法会直接覆盖原参数
       this.getData();
     },
-    changeOrder(params){
+    changeOrder(Class) {
+      let originOrder = this.searchParams.order;
+      let originClass = originOrder.split(":")[0];
+      let originSort = originOrder.split(":")[1];
+      let newOrder = "";
       // 1.如果是点的一个按钮，切换升序/降序
-      // 2.不是一个按钮
-      
-    }
+      if (Class == originClass) {
+        newOrder = `${originClass}:${originSort == "desc" ? "asc" : "desc"}`;
+      } else {
+        // 2.不是一个按钮,切换模式就完事了
+        newOrder = `${Class}:${"desc"}`;
+      }
+      this.searchParams.order = newOrder;
+      this.getData();
+    },
   },
   computed: {
     ...mapGetters({
@@ -245,18 +265,24 @@ export default {
       attrsList: "search/attrsList",
       trademarkList: "search/trademarkList",
     }),
-    isOne(){
+    isOne() {
       return this.searchParams.order.indexOf("1") != -1;
     },
-    isTwo(){
+    isTwo() {
       return this.searchParams.order.indexOf("2") != -1;
-    }
+    },
+    isAsc(){
+      return this.searchParams.order.split(":")[1] == "asc";
+    },
+    isDesc(){
+      return this.searchParams.order.split(":")[1] == "desc";
+    },
   },
   watch: {
     async $route(newValue, oldValue) {
       // console.log("合并前的query:",this.$route.query);
       // console.log("合并前的params:",this.$route.params);
-      await new Promise((resolve) =>{
+      await new Promise((resolve) => {
         Object.assign(this.searchParams, this.$route.query, this.$route.params);
         resolve();
       });
