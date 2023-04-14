@@ -18,7 +18,19 @@ const actions = {
     }    
   }
 }
-const getters = {}
+const getters = {
+  // "categoryView","skuInfo","spuSaleAttrList"
+  // 解决undefined问题：初始化空对象
+  categoryView(state){
+    return state.goodsInfo.categoryView || {};
+  },
+  skuInfo(state){
+    return state.goodsInfo.skuInfo || {};
+  },
+  spuSaleAttrList(state){
+    return state.goodsInfo.spuSaleAttrList || {};
+  },
+}
 
 export default{
   namespaced: true,
