@@ -2,19 +2,22 @@
   <div>
     <div class="pagination">
       <button :disabled="pageNo == 1" @click="$emit('getPageNo',pageNo - 1)">上一页</button>
-      <button v-if="startNumAndEndNum.start >1" @click="$emit('getPageNo', 1)">1</button>
+      <button v-if="startNumAndEndNum.start >1" @click="$emit('getPageNo', 1)" :class="{active : pageNo == 1}">1</button>
       <button v-if="startNumAndEndNum.start >= 3">···</button>
-      <button v-for="(index) in continues" :key="index">
+
+      <!-- 自写方法 -->
+      <button v-for="(index) in continues" :key="index" :class="{active : pageNo == startNumAndEndNum.start +index -1}">
         {{ startNumAndEndNum.start +index -1 }}
       </button>
+      <!-- 老师方法 -->
       <!-- <button v-for="(page,index) in startNumAndEndNum.end" :key="index" v-if="page >= startNumAndEndNum.start">
       {{ page }}
       </button> -->
       <h3>(Test)start:{{ startNumAndEndNum.start  }},end:{{ startNumAndEndNum.end  }},current:{{ pageNo }}</h3>
 
       <button v-if="startNumAndEndNum.end <= totalPage -2 ">···</button>
-      <button v-if="startNumAndEndNum.end < totalPage">{{totalPage}}</button>
-      <button>下一页</button>
+      <button v-if="startNumAndEndNum.end < totalPage" @click="$emit('getPageNo',totalPage)" :class="{active : pageNo == totalPage}">{{totalPage}}</button>
+      <button :disabled="pageNo == totalPage" @click="$emit('getPageNo',pageNo + 1)">下一页</button>
 
       <button style="margin-left: 30px">共 {{total}} 条</button>
     </div>
@@ -35,7 +38,7 @@ export default {
       // 情况1：总页数小于连续页码
       if(this.continues > this.totalPage){
         start = 1;
-        end = totalPage;
+        end = this.totalPage;
       }else{
         // parseInt(string, radix) 解析一个字符串并返回指定基数的十进制整数（向下取整），radix 是 2-36 之间的整数，表示被解析字符串的进制数。
         start = this.pageNo - parseInt(this.continues /2 );

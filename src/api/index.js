@@ -13,5 +13,9 @@ requestsMock.get('/banner') ;
 export const reqFloorList = () =>
 requestsMock.get('/floor')  ; // 获取floor数据
 
+// 获取搜索信息
 // params至少是一个空对象
 export const reqGetSearchInfo = (params)=>requests({url:"/list", method:"post", data:params});
+
+// 获取商品details信息
+export const reqGoodsInfo = (skuId)=>requests({ url:`/api/item/${skuId}`, method:"get" })

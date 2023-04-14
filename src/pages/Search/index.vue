@@ -83,9 +83,10 @@
               >
                 <div class="list-wrap">
                   <div class="p-img">
-                    <a href="item.html" target="_blank"
+                    <!-- <a href="item.html" target="_blank"
                       ><img :src="good.defaultImg"
-                    /></a>
+                    /></a> -->
+                    <router-link :to="`/detail/${good.id}`">router-linkTest</router-link>
                   </div>
                   <div class="price">
                     <strong>
@@ -119,7 +120,7 @@
               </li>
             </ul>
           </div>
-          <!-- 分页器（未开发） -->
+          <!-- 分页器 -->
           <!-- 数据1.当前页码 2.单页面结果显示数量 3.总结果数量 4.continues（连续页码的数字(奇数)）-->
           <!-- total参数在result.data内 -->
           <Pagination
@@ -159,7 +160,7 @@ export default {
         //排序:初始状态应该是综合且降序
         order: "1:desc",
         //第几页
-        pageNo: 10,
+        pageNo: 1,
         //每一页展示条数
         pageSize: 3,
         //平台属性的操作
@@ -258,11 +259,11 @@ export default {
       this.searchParams.order = newOrder;
       this.getData();
     },
-    // 
-    getPageNo(pageNo){
+    //
+    getPageNo(pageNo) {
       this.searchParams.pageNo = pageNo;
       this.getData();
-    }
+    },
   },
   computed: {
     ...mapGetters({
