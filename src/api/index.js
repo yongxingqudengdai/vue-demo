@@ -18,4 +18,4 @@ requestsMock.get('/floor')  ; // 获取floor数据
 export const reqGetSearchInfo = (params)=>requests({url:"/list", method:"post", data:params});
 
 // 获取商品details信息
-export const reqGoodsInfo = (skuId)=>requests({ url:`/api/item/${skuId}`, method:"get" })
+export const reqGoodsInfo = (skuId)=>requests({ url:`/item/${skuId}`, method:"get" })

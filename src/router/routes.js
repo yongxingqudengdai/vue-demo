@@ -29,6 +29,7 @@ export default [
   },
   {
     name: 'search',
+    // 问号非必填
     path: '/search/:keyword?',
     component: Search,
     meta: {
@@ -37,7 +38,7 @@ export default [
   },
   {
     name: 'detail',
-    path: '/detail',
+    path: '/detail/:skuId',
     component: Detail,
     meta: {
       show: true
