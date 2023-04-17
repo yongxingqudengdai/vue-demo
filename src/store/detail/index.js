@@ -1,5 +1,5 @@
 // 引入api服务
-import { reqGoodsInfo } from "@/api";
+import { reqAddOrUpdateShopCart, reqGoodsInfo } from "@/api";
 
 const state = {
   goodsInfo:[],
@@ -17,6 +17,15 @@ const actions = {
     if(result.code == 200){
       context.commit('GOODSINFO',result.data)
     }    
+  },
+  async AddOrUpdateShopCart(context,skuId,skuNum){
+    let result = await reqAddOrUpdateShopCart(skuId,skuNum);
+    console.log('AddOrUpdateShopCart actions excuted');
+    if(result.code == 200){
+      return "ok";
+    }else{
+      return Promise.reject(new Error("faile"))
+    }
   }
 }
 const getters = {
