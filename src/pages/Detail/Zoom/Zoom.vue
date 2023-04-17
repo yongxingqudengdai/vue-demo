@@ -1,7 +1,7 @@
 <template>
   <div class="spec-preview">
     <img :src="imgObj.imgUrl" />
-    <div class="event" @mousemove="handle()"></div>
+    <div class="event" @mousemove="handler"></div>
     <!-- 放大镜效果 -->
     <div class="big">
       <img :src="imgObj.imgUrl" ref="big" />
@@ -34,9 +34,29 @@ export default {
     });
   },
   methods:{
-    handle(){
-      console.log('handle');
+    handler(event){
       let mask = this.$refs.mask;
+      let big = this.$refs.big;
+      // 定位坐标
+      let left = event.offsetX - mask.offsetWidth/2 ;
+      let top = event.offsetY - mask.offsetHeight/2 ;
+    // 限制范围:
+      // 左边
+      if(left <= 0) left = 0;
+      // 右边
+      if(left >= mask.offsetWidth) left = mask.offsetWidth;
+      // 上边
+      if(top <= 0) top=0;
+      // 下边
+      if(top >= mask.offsetHeight) top = mask.offsetHeight;
+      // ***mask元素位置修改
+      mask.style.left = left + 'px'
+      mask.style.top = top + 'px'
+
+      // big大图样式修改（因为是放大了200%的，所以要x2  ;负数是因为要计算放大的起始像素位置）
+      big.style.left = - 2 * left+'px';
+      big.style.top = -2 * top +'px'; 
+
     }
   }
 };
