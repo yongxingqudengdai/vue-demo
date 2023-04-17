@@ -12,6 +12,7 @@
 <script>
   export default {
     name: "Zoom",
+    props:["skuImageList"],
   }
 </script>
 

@@ -25,6 +25,9 @@ import router from './router'
 // 引入vuex仓库
 import store from './store'
 
+// 引入v-lazy图片懒加载需要的插件
+import VueLazyload from 'vue-lazyload';
+Vue.use(VueLazyload)
 //关闭Vue的生产提示
 Vue.config.productionTip = false
 //apply the plugin

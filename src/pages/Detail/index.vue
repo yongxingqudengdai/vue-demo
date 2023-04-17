@@ -22,7 +22,7 @@
         <!-- 左侧放大镜区域 -->
         <div class="previewWrap">
           <!--放大镜效果-->
-          <Zoom />
+          <Zoom :skuImageList="skuImageList"/>
           <!-- 小图列表 -->
           <ImageList />
         </div>
@@ -77,12 +77,18 @@
           <div class="choose">
             <div class="chooseArea">
               <div class="choosed"></div>
-              <dl v-for="(item, index) in spuSaleAttrList" :key="item.id">
+              <dl v-for="(item, index) in spuSaleAttrList" 
+              :key="item.id">
                 <dt class="title">{{ item.saleAttrName }}</dt>
                 <dd
-                  changeprice="0"
                   v-for="(subitem, index) in item.spuSaleAttrValueList"
-                  :key="subitem.id"
+                  changeprice="0"
+                  :class="{active: subitem.isChecked == 1}"
+                  :key="subitem.id" 
+                  @click="changeActive(
+                    subitem,
+                    item.spuSaleAttrValueList
+                  )"
                 >
                   {{ subitem.saleAttrValueName }}
                 </dd>
@@ -357,7 +363,19 @@ export default {
   },
   computed: {
     ...mapGetters("detail", ["categoryView", "skuInfo", "spuSaleAttrList"]),
+    skuImageList(){
+      return this.skuInfo.skuImageList || [];
+    },
   },
+  methods:{
+    // ???这里不太懂
+    changeActive(saleAttrValue,arr){
+      arr.forEach((item)=>{
+        item.isChecked = 0;
+      });
+      saleAttrValue.isChecked = 1;
+    }
+  }
 };
 </script>
 

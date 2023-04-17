@@ -86,7 +86,9 @@
                     <!-- <a href="item.html" target="_blank"
                       ><img :src="good.defaultImg"
                     /></a> -->
-                    <router-link :to="`/detail/${good.id}`">router-linkTest</router-link>
+                    <router-link :to="`/detail/${good.id}`">
+                      <img v-lazy="good.defaultImg">
+                    </router-link>
                   </div>
                   <div class="price">
                     <strong>
