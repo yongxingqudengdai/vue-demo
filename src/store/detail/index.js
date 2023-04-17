@@ -13,6 +13,7 @@ const actions = {
   async goodsInfo(context,skuId){
     let result = await reqGoodsInfo(skuId);
     console.log('GoodsInfo:',result);
+    console.log('skuImageList:',result.data.skuInfo.skuImageList);
     if(result.code == 200){
       context.commit('GOODSINFO',result.data)
     }    

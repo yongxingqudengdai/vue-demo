@@ -24,7 +24,7 @@
           <!--放大镜效果-->
           <Zoom :skuImageList="skuImageList"/>
           <!-- 小图列表 -->
-          <ImageList />
+          <ImageList :skuImageList="skuImageList" />
         </div>
         <!-- 右侧选择区域布局 -->
         <div class="InfoWrap">
@@ -359,7 +359,6 @@ export default {
   mounted() {
     console.log("good.id是：", this.$route.params.skuId);
     this.$store.dispatch("detail/goodsInfo", this.$route.params.skuId);
-    console.log("test", this.spuSaleAttrList);
   },
   computed: {
     ...mapGetters("detail", ["categoryView", "skuInfo", "spuSaleAttrList"]),
@@ -368,7 +367,7 @@ export default {
     },
   },
   methods:{
-    // ???这里不太懂
+    // 只是修改了computed的部分属性（ischecked），不会出现异常
     changeActive(saleAttrValue,arr){
       arr.forEach((item)=>{
         item.isChecked = 0;
