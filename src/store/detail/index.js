@@ -18,9 +18,9 @@ const actions = {
       context.commit('GOODSINFO',result.data)
     }    
   },
-  async AddOrUpdateShopCart(context,skuId,skuNum){
+  async addOrUpdateShopCart(context,{skuId,skuNum}){
     let result = await reqAddOrUpdateShopCart(skuId,skuNum);
-    console.log('AddOrUpdateShopCart actions excuted');
+    console.log('addOrUpdateShopCart actions excuted,result:',result);
     if(result.code == 200){
       return "ok";
     }else{

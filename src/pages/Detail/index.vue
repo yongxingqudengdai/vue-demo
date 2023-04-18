@@ -22,7 +22,7 @@
         <!-- 左侧放大镜区域 -->
         <div class="previewWrap">
           <!--放大镜效果-->
-          <Zoom :skuImageList="skuImageList"/>
+          <Zoom :skuImageList="skuImageList" />
           <!-- 小图列表 -->
           <ImageList :skuImageList="skuImageList" />
         </div>
@@ -77,18 +77,14 @@
           <div class="choose">
             <div class="chooseArea">
               <div class="choosed"></div>
-              <dl v-for="(item, index) in spuSaleAttrList" 
-              :key="item.id">
+              <dl v-for="(item, index) in spuSaleAttrList" :key="item.id">
                 <dt class="title">{{ item.saleAttrName }}</dt>
                 <dd
                   v-for="(subitem, index) in item.spuSaleAttrValueList"
                   changeprice="0"
-                  :class="{active: subitem.isChecked == 1}"
-                  :key="subitem.id" 
-                  @click="changeActive(
-                    subitem,
-                    item.spuSaleAttrValueList
-                  )"
+                  :class="{ active: subitem.isChecked == 1 }"
+                  :key="subitem.id"
+                  @click="changeActive(subitem, item.spuSaleAttrValueList)"
                 >
                   {{ subitem.saleAttrValueName }}
                 </dd>
@@ -100,12 +96,22 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" v-model="skuNum" @change="changeSkuNum"/>
+                <input
+                  autocomplete="off"
+                  class="itxt"
+                  v-model="skuNum"
+                  @change="changeSkuNum"
+                />
                 <a href="javascript:" class="plus" @click="skuNum++">+</a>
-                <a href="javascript:" class="mins" @click="skuNum >1 ? skuNum-- : (skuNum=1)">-</a>
+                <a
+                  href="javascript:"
+                  class="mins"
+                  @click="skuNum > 1 ? skuNum-- : (skuNum = 1)"
+                  >-</a
+                >
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a @click="addshopcar">加入购物车</a>
               </div>
             </div>
           </div>
@@ -351,11 +357,11 @@ import Zoom from "./Zoom/Zoom";
 
 export default {
   name: "Detail",
-  data(){
-    return{
+  data() {
+    return {
       // 购买产品的个数
-      skuNum: 1
-    }
+      skuNum: 1,
+    };
   },
   components: {
     ImageList,
@@ -367,30 +373,45 @@ export default {
   },
   computed: {
     ...mapGetters("detail", ["categoryView", "skuInfo", "spuSaleAttrList"]),
-    skuImageList(){
+    skuImageList() {
       return this.skuInfo.skuImageList || [];
     },
   },
-  methods:{
+  methods: {
     // 只是修改了computed的部分属性（ischecked），不会出现异常
-    changeActive(saleAttrValue,arr){
-      arr.forEach((item)=>{
+    changeActive(saleAttrValue, arr) {
+      arr.forEach((item) => {
         item.isChecked = 0;
       });
       saleAttrValue.isChecked = 1;
     },
-    changeSkuNum(event){
+    changeSkuNum(event) {
       // 让表单元素值*1
-      let value = event.target.value * 1 ;
+      let value = event.target.value * 1;
       // 如果不是数字||值小于1（非法）
-      if(isNaN(value) || value <1){
+      if (isNaN(value) || value < 1) {
         this.skuNum = 1;
-      }else{
+      } else {
         // 如果正常，则***取整
         this.skuNum = parseInt(value);
       }
-    }
-  }
+    },
+    async addshopcar() {
+      try {
+        await this.$store.dispatch("detail/addOrUpdateShopCart", {
+          skuId: this.$route.params.skuId,
+          skuNum: this.skuNum,
+        });
+        sessionStorage.setItem("SKUINFO",JSON.stringify(this.skuInfo));
+        this.$router.push({
+          name:"addcartsuccess",
+          query:{ skuNum: this.skuNum }
+        })
+      } catch (error) {
+        alert(error.message);
+      }
+    },
+  },
 };
 </script>
 
