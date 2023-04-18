@@ -34,6 +34,20 @@ const actions = {
       return Promise.reject(new Error('updateCheckedById error'));
     }
   },
+  // ***删除全部选中的产品，这段代码的处理方式好好学
+  async deleteAllCheckedCart(context){
+    let PromiseAll = [];
+    context.getters.cartList.cartInfoList.forEach(item =>{
+      let promise = 
+        item.isChecked == 1
+          ?context.dispatch("deleteCartById",item.skuId)
+          :"";
+    PromiseAll.push(promise);
+    });
+    return Promise.all(PromiseAll);
+  },
+
+
   // 修改选中状态（全部）
   async updateAllCartIsChecked(context,isChecked){
     // array占位，用于存储所有promise对象
