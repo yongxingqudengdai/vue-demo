@@ -5,8 +5,19 @@ import Register from '@/pages/Register'
 import Search from '@/pages/Search'
 import Detail from '@/pages/Detail'
 import AddCartSuccess from '@/pages/AddCartSuccess'
+import ShopCart from '@/pages/ShopCart'
 
 export default [
+  // 我的购物车页面
+  {
+    path: '/shopcart',
+    name:'ShopCart',
+    component: ShopCart,
+    meta: {
+      show: true
+    }
+  },
+  // 成功加入购物车页面
   {
     path: '/addcartsuccess',
     name:'addcartsuccess',
