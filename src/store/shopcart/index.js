@@ -23,10 +23,6 @@ const getters = {
   cartList(state){
     return state.cartList[0] || {}
   },
-  // 购物车数据
-  cartInfoList(){
-    
-  }
 };
 
 export default {

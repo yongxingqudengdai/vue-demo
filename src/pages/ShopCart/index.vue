@@ -11,29 +11,48 @@
         <div class="cart-th6">操作</div>
       </div>
       <div class="cart-body">
-        <ul class="cart-list" v-for="(item,index) in cartInfoList" :key="item.id">
+        <ul
+          class="cart-list"
+          v-for="(item, index) in cartInfoList"
+          :key="item.id"
+        >
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" :checked="item.isChecked == 1"/>
+            <input
+              type="checkbox"
+              name="chk_list"
+              :checked="item.isChecked == 1"
+            />
           </li>
           <li class="cart-list-con2">
             <img :src="item.imgUrl" />
             <div class="item-msg">
-            {{item.skuName}}
+              {{ item.skuName }}
             </div>
           </li>
           <li class="cart-list-con4">
-            <span class="price">{{item.skuPrice}}</span>
+            <span class="price">{{ item.skuPrice }}</span>
           </li>
           <li class="cart-list-con5">
-            <a href="javascript:void(0)" class="mins">-</a>
+            <a
+              href="javascript:void(0)"
+              class="mins"
+              @click="handler('minus', -1, item)"
+              >-</a
+            >
             <input
               autocomplete="off"
               type="text"
               minnum="1"
               class="itxt"
               :value="item.skuNum"
+              @change="handler('change', $event.target.value * 1, item)"
             />
-            <a href="javascript:void(0)" class="plus">+</a>
+            <a
+              href="javascript:void(0)"
+              class="plus"
+              @click="handler('add', 1, item)"
+              >+</a
+            >
           </li>
           <li class="cart-list-con6">
             <span class="sum">{{ item.skuNum * item.skuPrice }}</span>
@@ -44,12 +63,11 @@
             <a href="#none">移到收藏</a>
           </li>
         </ul>
-
       </div>
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox" />
+        <input class="chooseAll" type="checkbox" :checked="isAllCheck" />
         <span>全选</span>
       </div>
       <div class="option">
@@ -61,7 +79,7 @@
         <div class="chosed">已选择 <span>0</span>件商品</div>
         <div class="sumprice">
           <em>总价（不含运费） ：</em>
-          <i class="summoney">0</i>
+          <i class="summoney">{{ totalPrice }}</i>
         </div>
         <div class="sumbtn">
           <a class="sum-btn" href="###" target="_blank">结算</a>
@@ -72,27 +90,66 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 export default {
   name: "ShopCart",
-  mounted(){
+  mounted() {
     this.getData();
   },
-  methods:{
-    getData(){
+  methods: {
+    getData() {
       this.$store.dispatch("shopcart/getCartList");
-    }
+    },
+    // 修改某商品的个数（ + & — &文本修改）
+    // 接受三个参数
+    // ***没做防抖
+    async handler(type, disNum, cart) {
+      switch (type) {
+        case "add":
+          disNum = 1;
+          break;
+        case "minus":
+          disNum = cart.skuNum > 1 ? -1 : 0;
+          break;
+        case "change":
+          if (isNaN(disNum) || disNum < 1) {
+            disNum = 0;
+          } else {
+            disNum = parseInt(disNum) - cart.skuNum;
+          }
+          break;
+      }
+      try{
+        await this.$store.dispatch("detail/addOrUpdateShopCart",{
+          skuId: cart.skuId,
+          skuNum: disNum,
+        });
+        this.getData();
+      }catch(error){}
+    },
+
   },
-  computed:{
+  computed: {
     ...mapGetters({
-      cartList:"shopcart/cartList"
+      cartList: "shopcart/cartList",
     }),
     // 购物车数据，cartList内部的cartInfoList
-    cartInfoList(){
+    cartInfoList() {
       return this.cartList.cartInfoList || [];
-    }
+    },
+    // 计算购物车总价
+    totalPrice() {
+      let sum = 0;
+      this.cartInfoList.forEach((item) => {
+        sum += item.skuNum * item.skuPrice;
+      });
+      return sum;
+    },
+    // 判断复选框是否全选【产品全选择时勾选】
+    isAllCheck() {
+      return this.cartInfoList.every((item) => item.isChecked == 1);
+    },
   },
-
 };
 </script>
 
