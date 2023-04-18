@@ -87,8 +87,16 @@
       },
       // 用户注册
       async userRegister(){
-        // console.log('111');
-
+        try{
+          const {phone, code, password, password1} = this;
+          await this.$store.dispatch("user/userRegister",{
+            phone,code,password
+          });
+          // 注册成功时跳转
+          this.$router.push("/login");
+        }catch(error){
+          alert(error.message);
+        }
       },
     }
   }
