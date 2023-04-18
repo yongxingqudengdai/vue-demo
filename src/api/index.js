@@ -36,3 +36,8 @@ export const reqDeleteCartById = (skuId) => requests({ url:`/cart/deleteCart/${s
 //修改商品的选中状态
 //URL:/api/cart/checkCart/{skuId}/{isChecked}   method:get 
 export const reqUpdateCheckedById = (skuId,isChecked)=>requests({url:`/cart/checkCart/${skuId}/${isChecked}`,method:'get'});
+
+// 注册用户
+// URL:/api/user/passport/register   method:post  phone code password
+export const reqUserRegister = (data) =>requests({url:`/user/passport/register`,data:data,method:"post"});
+

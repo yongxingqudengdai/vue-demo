@@ -33,6 +33,7 @@ Vue.config.productionTip = false
 //apply the plugin
 Vue.use(VueRouter)
 
+// 引入v-validate表单校验插件(先不做)
 
 //创建vm
 new Vue({
