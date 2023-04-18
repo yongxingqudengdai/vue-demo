@@ -14,7 +14,7 @@
       <div class="content">
         <label>验证码:</label>
         <input type="text" placeholder="请输入验证码" v-model="code">
-        <img ref="code" src="http://182.92.128.115/api/user/passport/code" alt="code">
+        <button style="width:100px;height:38px" @click="getCode">获取验证码</button>
         <span class="error-msg">错误提示信息</span>
       </div>
       <div class="content">
@@ -33,7 +33,7 @@
         <span class="error-msg">错误提示信息</span>
       </div>
       <div class="btn">
-        <button>完成注册</button>
+        <button @click="userRegister">完成注册</button>
       </div>
     </div>
 
@@ -61,7 +61,7 @@
     name: 'Register',
     data(){
       return {
-      // 收集表单数据--手机号
+      //收集表单数据--手机号
       phone:  "",
       //验证码
       code: "",
@@ -74,7 +74,22 @@
       }
     },
     methods:{
-      
+      // 获取验证码
+      async getCode(){
+        try{
+          const {phone} = this ;
+          // ***使用短路逻辑判断，如果存在phone则执行
+          phone && (await this.$store.dispatch("user/getCode", phone));
+          this.code = this.$store.state.user.code;
+        }catch(error){
+          alert(error.message);
+        }
+      },
+      // 用户注册
+      async userRegister(){
+        // console.log('111');
+
+      },
     }
   }
 </script>
