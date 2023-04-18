@@ -4,8 +4,17 @@ import Login from '@/pages/Login'
 import Register from '@/pages/Register'
 import Search from '@/pages/Search'
 import Detail from '@/pages/Detail'
+import AddCartSuccess from '@/pages/AddCartSuccess'
 
 export default [
+  {
+    path: '/addcartsuccess',
+    name:'addcartsuccess',
+    component: AddCartSuccess,
+    meta: {
+      show: true
+    }
+  },
   {
     path: '/home',
     component: Home,
@@ -45,8 +54,8 @@ export default [
     }
   },
   // 重定向
-    {
-      path: '/',
-      redirect: '/home'
-    }
+  {
+    path: '/',
+    redirect: '/home'
+  }
 ]

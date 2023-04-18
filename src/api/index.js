@@ -23,4 +23,4 @@ export const reqGoodsInfo = (skuId)=>requests({ url:`/item/${skuId}`, method:"ge
 // 将产品添加到购物车&更新产品个数
 // /api/cart/addToCart/{ skuId }/{ skuNum }
 // ???没有data配置项，不需要返回数据？
-export const reqAddOrUpdateShopCart = (skuId,skuNum)=>requests({ url:`/cart/addToCart${skuId}/${skuNum}`,method:"post",  })
+export const reqAddOrUpdateShopCart = (skuId,skuNum)=>requests({ url:`/cart/addToCart/${skuId}/${skuNum}`,method:"post",  })

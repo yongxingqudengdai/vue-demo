@@ -111,7 +111,7 @@
                 >
               </div>
               <div class="add">
-                <a @click="addshopcar">加入购物车</a>
+                <a @click="addShopcar">加入购物车</a>
               </div>
             </div>
           </div>
@@ -368,7 +368,7 @@ export default {
     Zoom,
   },
   mounted() {
-    console.log("good.id是：", this.$route.params.skuId);
+    // console.log("good.id是：", this.$route.params.skuId);
     this.$store.dispatch("detail/goodsInfo", this.$route.params.skuId);
   },
   computed: {
@@ -396,13 +396,17 @@ export default {
         this.skuNum = parseInt(value);
       }
     },
-    async addshopcar() {
+    async addShopcar() {
       try {
+        // await等待成功回调，如果失败（返回promise.reject）
         await this.$store.dispatch("detail/addOrUpdateShopCart", {
           skuId: this.$route.params.skuId,
           skuNum: this.skuNum,
         });
+        // 商品信息使用会话存储
+        // 本地存储和会话存储都是存的字符串，所以需要把对象stringify
         sessionStorage.setItem("SKUINFO",JSON.stringify(this.skuInfo));
+        // 商品数量使用query存储
         this.$router.push({
           name:"addcartsuccess",
           query:{ skuNum: this.skuNum }
