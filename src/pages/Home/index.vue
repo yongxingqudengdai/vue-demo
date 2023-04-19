@@ -37,6 +37,8 @@ export default {
   mounted(){
     // 派发action获取floor.json数据
     this.$store.dispatch("home/floorList");
+    // 派发action获取用户信息
+    this.$store.dispatch("user/getUserInfo");
   },
   computed: {
     ...mapState("home", ["count"]),

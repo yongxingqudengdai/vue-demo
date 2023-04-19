@@ -1,11 +1,12 @@
 // 引入api
-import { reqGetCode, reqUserRegister,reqUserLogin } from "@/api";
+import { reqGetCode, reqUserRegister,reqUserLogin,reqUserInfo } from "@/api";
 // 引入utils.token
 import {setToken,getToken,removeToken} from "@/utils/token";
 
 const state = {
   code:"",
   token:getToken(),
+  userInfo:{},
 };
 const mutations = {
   GETCODE(state,code){
@@ -13,6 +14,9 @@ const mutations = {
   },
   USERLOGIN(state,token){
     state.token = token;
+  },
+  GETUSERINFO(state,userInfo){
+    state.userInfo = userInfo;
   },
 };
 const actions = {
@@ -48,6 +52,18 @@ const actions = {
       return Promise.reject(new Error("userLogin failed"));
     }
   },
+  // 获取用户信息
+  async getUserInfo(context){
+    let result = await reqUserInfo();
+    if(result.code == 200){
+      context.commit("GETUSERINFO",result.data);
+      return "ok";
+    }else{
+      return Promise.reject(new Error("getUserInfo failed"));
+    }
+  },
+
+
 };
 const getters = {};
  
