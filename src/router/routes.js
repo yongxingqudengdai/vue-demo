@@ -15,9 +15,18 @@ export default [
     path: '/pay',
     name: 'Pay',
     component: Pay,
+    props: route =>({orderId: route.query.orderId}),
     meta: {
       show: true,
-    }
+    },
+    /* 只能从交易界面, 才能跳转到支付界面 */
+    beforeEnter(to,from,next){
+      if(from.path==='/trade'){
+        next()
+      }else{
+        next('/trade')
+      }
+    },
   },
   // trade交易页面
   {

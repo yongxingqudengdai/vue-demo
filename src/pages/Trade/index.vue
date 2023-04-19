@@ -148,8 +148,8 @@ import { mapState } from 'vuex';
         if(result.code == 200){
           this.orderId = result.data;
           console.log("submitOrder result:",result);
-          // 路由跳转 + 路由传递参数
-          this.$router.push('/payorder'+this.orderId);
+          // 路由跳转,“？”后传递一个名为orderId的query参数
+          this.$router.push('/pay?orderId='+this.orderId);
         }else{
           alert(result.data)
         }
