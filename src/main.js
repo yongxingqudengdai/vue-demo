@@ -17,6 +17,9 @@ import '@/mock/mockServe'
 // 引入swiper的css样式
 import 'swiper/css/swiper.css'
 
+// 引入api所有请求函数
+import * as API from '@/api';
+
 // 引入vueRouter
 import VueRouter from 'vue-router'
 // 引入路由器
@@ -42,6 +45,8 @@ new Vue({
 	// 安装全局事件总线$bus（激活）
 	beforeCreate() {
 		Vue.prototype.$bus = this;
+		// ???
+		Vue.prototype.$API = API;
 	},
 	router,
 	store

@@ -62,8 +62,8 @@
     <div class="money clearFix">
       <ul>
         <li>
-          <b><i>1</i>件商品，总商品金额</b>
-          <span>¥5399.00</span>
+          <b><i>*{{ orderInfo.totalNum }}*</i>件商品，总商品金额</b>
+          <span>¥{{ orderInfo.totalAmount }}.00</span>
         </li>
         <li>
           <b>返现：</b>
@@ -76,16 +76,17 @@
       </ul>
     </div>
     <div class="trade">
-      <div class="price">应付金额:　<span>¥5399.00</span></div>
+      <div class="price">应付金额:　<span>¥{{ orderInfo.totalAmount }}.00</span></div>
       <div class="receiveInfo">
         寄送至:
-        <span>北京市昌平区宏福科技园综合楼6层</span>
-        收货人：<span>张三</span>
-        <span>15010658793</span>
+        <span>{{ userDefaultAddress.fullAddress }}</span>
+        收货人：<span>{{ userDefaultAddress.consignee }}</span>
+        <span>{{ userDefaultAddress.phoneNum }}</span>
       </div>
     </div>
     <div class="sub clearFix">
-      <router-link class="subBtn" to="/pay">提交订单</router-link>
+      <!-- 提交订单，跳转到pay页面 -->
+      <a class="subBtn" @click="submitOrder">submit order</a>
     </div>
   </div>
 </template>
@@ -118,7 +119,6 @@ import { mapState } from 'vuex';
         // ***使用JS数组的find方法，返回数组中符合的第一个item元素,没有则返回undefined
         return this.addressInfo.find((item) => item.isDefault==1) || {};
       },
-
     },
     methods:{
       // 修改默认地址
@@ -129,9 +129,31 @@ import { mapState } from 'vuex';
         });
         // 将当前item的isDefault值置为1
         item.isDefault = 1;
-      }
+      },
       // 提交订单
-
+      async submitOrder(){
+        // **解构赋值方法提取 交易编码 
+        let {tradeNo} = this.orderInfo ; 
+        // 用户信息
+        let data ={
+          consignee: this.userDefaultAddress.consignee, //最终收件人的名字
+          consigneeTel: this.userDefaultAddress.phoneNum, //最终收件人的手机号
+          deliveryAddress: this.userDefaultAddress.fullAddress, //收件人的地址
+          paymentWay: "ONLINE", //支付方式
+          orderComment: this.msg, //买家的留言信息
+          orderDetailList: this.orderInfo.detailArrayList, //商品清单
+        };
+        // 调用全局api
+        let result = await this.$API.reqSubmitOrder(tradeNo, data);
+        if(result.code == 200){
+          this.orderId = result.data;
+          console.log("submitOrder result:",result);
+          // 路由跳转 + 路由传递参数
+          this.$router.push('/payorder'+this.orderId);
+        }else{
+          alert(result.data)
+        }
+      }
     },
   }
 </script>

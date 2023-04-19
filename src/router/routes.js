@@ -7,12 +7,22 @@ import Detail from '@/pages/Detail'
 import AddCartSuccess from '@/pages/AddCartSuccess'
 import ShopCart from '@/pages/ShopCart'
 import Trade from '@/pages/Trade'
+import Pay from '@/pages/Pay'
 
 export default [
+  // pay支付页面
+  {
+    path: '/pay',
+    name: 'Pay',
+    component: Pay,
+    meta: {
+      show: true,
+    }
+  },
   // trade交易页面
   {
     path: '/trade',
-    name:'Trade',
+    name: 'Trade',
     component: Trade,
     meta: {
       show: true,
@@ -21,7 +31,7 @@ export default [
   // 我的购物车页面
   {
     path: '/shopcart',
-    name:'ShopCart',
+    name: 'ShopCart',
     component: ShopCart,
     meta: {
       show: true
@@ -30,7 +40,7 @@ export default [
   // 成功加入购物车页面
   {
     path: '/addcartsuccess',
-    name:'addcartsuccess',
+    name: 'addcartsuccess',
     component: AddCartSuccess,
     meta: {
       show: true

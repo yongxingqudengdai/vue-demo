@@ -67,7 +67,7 @@ const actions = {
       // console.log('userinfo:',result.data);
       return "ok";
     }else{
-      return Promise.reject(new Error("getUserInfo failed:可能你还没登陆"));
+      return Promise.reject(new Error("getUserInfo failed:admin账号13700000000密码6个1"));
     }
   },
   // 退出登录
