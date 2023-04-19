@@ -6,8 +6,18 @@ import Search from '@/pages/Search'
 import Detail from '@/pages/Detail'
 import AddCartSuccess from '@/pages/AddCartSuccess'
 import ShopCart from '@/pages/ShopCart'
+import Trade from '@/pages/Trade'
 
 export default [
+  // trade交易页面
+  {
+    path: '/trade',
+    name:'Trade',
+    component: Trade,
+    meta: {
+      show: true,
+    }
+  },
   // 我的购物车页面
   {
     path: '/shopcart',

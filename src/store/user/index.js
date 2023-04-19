@@ -64,10 +64,10 @@ const actions = {
     let result = await reqUserInfo();
     if(result.code == 200){
       context.commit("GETUSERINFO",result.data);
-      console.log('userinfo:',result.data);
+      // console.log('userinfo:',result.data);
       return "ok";
     }else{
-      return Promise.reject(new Error("getUserInfo failed"));
+      return Promise.reject(new Error("getUserInfo failed:可能你还没登陆"));
     }
   },
   // 退出登录

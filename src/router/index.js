@@ -53,9 +53,34 @@ router.beforeEach(async (to,from,next)=>{
     // ***to和from都是$route对象
     // 不让注册和登录
     if(to.path == '/login' || to.path == '/register'){
-      next('/');
+      // 跳转到根路径
+      next(false);
+    }else{
+      // 登录且有用户信息
+      if(name){
+        next();
+      }else{
+        try{
+          // 解决登录但没有用户信息的问题
+          await store.dispatch('user/getUserInfo');
+          next();
+        }catch(Error){
+          await store.dispatch('user/userLogout');
+          next('/login');
+        }
+      }
     }
     
+  }else{
+    // 用户未登录
+    // 记录一下跳转地址
+    let ToPath = to.path;
+    // （未开发）如果存在，保存topath中的trade、pay、center参数
+    if(ToPath.indexOf('/tra123') != -1){
+      next('/login?redirect')
+    }else{
+      next()
+    }
   }
 })
 
