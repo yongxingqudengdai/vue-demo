@@ -1,5 +1,5 @@
 // 引入api
-import { reqGetCode, reqUserRegister,reqUserLogin,reqUserInfo } from "@/api";
+import { reqGetCode, reqUserRegister,reqUserLogin,reqUserInfo, reqLogout } from "@/api";
 // 引入utils.token
 import {setToken,getToken,removeToken} from "@/utils/token";
 
@@ -18,6 +18,13 @@ const mutations = {
   GETUSERINFO(state,userInfo){
     state.userInfo = userInfo;
   },
+  CLEAR(state){
+    // 先清空store
+    state.token = '';
+    state.userInfo = {};
+    // 本地存储清空
+    removeToken();
+  }
 };
 const actions = {
   // 用户注册User register
@@ -57,11 +64,24 @@ const actions = {
     let result = await reqUserInfo();
     if(result.code == 200){
       context.commit("GETUSERINFO",result.data);
+      console.log('userinfo:',result.data);
       return "ok";
     }else{
       return Promise.reject(new Error("getUserInfo failed"));
     }
   },
+  // 退出登录
+  async userLogout(context){
+    let result = await reqLogout();
+    if(result.code ==200){
+      // 清除token
+      context.commit('CLEAR');
+      return 'ok';
+    }else{
+      return Promise.reject(new Error('Logout error'));
+    }
+  },
+
 
 
 };
