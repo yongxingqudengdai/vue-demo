@@ -31,12 +31,18 @@ import store from './store'
 // 引入v-lazy图片懒加载需要的插件
 import VueLazyload from 'vue-lazyload';
 Vue.use(VueLazyload)
+
+// 按需引入element-ui并挂载到全局
+import {Button,MessageBox} from 'element-ui';
+Vue.prototype.$msgbox = MessageBox ;
+Vue.prototype.$alert = MessageBox.alert;
+
 //关闭Vue的生产提示
 Vue.config.productionTip = false
 //apply the plugin
 Vue.use(VueRouter)
 
-// 引入v-validate表单校验插件(先不做)
+// 引入v-validate表单校验插件(未开发)
 
 //创建vm
 new Vue({

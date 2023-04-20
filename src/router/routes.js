@@ -8,8 +8,52 @@ import AddCartSuccess from '@/pages/AddCartSuccess'
 import ShopCart from '@/pages/ShopCart'
 import Trade from '@/pages/Trade'
 import Pay from '@/pages/Pay'
+import PaySuccess from '@/pages/PaySuccess'
+import Center from '@/pages/Center'
+import MyOrder from '@/pages/Center/myOrder'
+import GroupOrder from '@/pages/Center/groupOrder'
 
 export default [
+  // 查看订单界面-用户中心
+  {
+    path:'/center',
+    component: Center,
+    // 二级路由
+    children:[
+      {
+        path:'myorder',
+        component:MyOrder,
+      },
+      {
+        path:'grouporder',
+        component:GroupOrder,
+      },
+      {
+        path:'',
+        redirect:'myorder'
+      }
+    ],
+    meta:{
+      show:true,
+    },
+  },
+  // 支付成功页面
+  {
+    path: '/paysuccess',
+    name: 'PaySuccess',
+    component: PaySuccess,
+    meta: {
+      show: true,
+    },
+    // 路由守卫：只能从支付页面跳转
+    // beforeEnter(to ,from ,next){
+    //   if(from.path === '/pay'){
+    //     next();
+    //   }else{
+    //     next('/pay');
+    //   }
+    // },
+  },
   // pay支付页面
   {
     path: '/pay',

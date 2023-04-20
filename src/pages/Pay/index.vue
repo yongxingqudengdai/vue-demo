@@ -125,9 +125,33 @@ export default {
       let url = await QRCode.toDataURL(this.payInfo.codeUrl);
       console.log(url);
       this.$alert(`<img src=${url} />`,"use wechat pay",{
-        
-      })
+        // alert内容视为html元素
+        dangerouslyUseHTMLString: true,
+        //居中显示
+        center: true,
+        //是否显示取消按钮
+        showCancelButton: true,
+        //取消按钮的文本内容
+        cancelButtonText: "支付遇见问题",
+        //确定按钮的文本
+        confirmButtonText: "已支付成功",
+        //右上角的叉子没了
+        showClose: false,
 
+        // 交互逻辑
+        beforeClose:(type , instance , done)=>{
+          // type:按钮类型（取消、确认）
+          // instance：当前组件实例
+          // done：关闭弹出框
+          if( type == "cancel"){
+            alert("please contact manager");
+            done();
+          }else{
+            this.$router.push("/paysuccess");
+          }
+          // 计时器业务未完成
+        }
+      });
 
     }
   },
